@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notícies - Cooperativa Marató TV3</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html" class="logo-link">
+                    <span class="logo-text">Cooperativa</span>
+                    <span class="logo-highlight">Escola Virolai</span>
+                </a>
+            </div>
+            
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link hover-underline">Inici</a>
+                <a href="index.html#sobre-nosaltres" class="nav-link hover-underline">Sobre Nosaltres</a>
+                <a href="events.html" class="nav-link hover-underline">Esdeveniments</a>
+                <a href="news.html" class="nav-link hover-underline">Notícies</a>
+                <a href="index.html#contacte" class="nav-link hover-underline">Contacte</a>
+            </div>
+
+            <div class="nav-actions">
+                <div class="search-container">
+                    <input type="text" id="search-input" placeholder="Cerca...">
+                    <div class="search-icon"><i class="fas fa-search"></i></div>
+                    <div id="search-results" class="search-results"></div>
+                </div>
+                <a href="index.html#contacte" class="btn btn-primary nav-donate hover-pulse">MÉS INFORMACIÓ</a>
+            </div>
+
+            <div class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="container">
+            <h1>Notícies</h1>
+            <p>Mantingues't informat de les nostres activitats i esdeveniments</p>
+        </div>
+    </section>
+
+    <!-- News Section -->
+    <section class="news-full">
+        <div class="container">
+            <div class="news-filters">
+                <button class="filter-btn active" data-filter="all">Totes</button>
+                <button class="filter-btn" data-filter="events">Esdeveniments</button>
+                <button class="filter-btn" data-filter="collaborations">Col·laboracions</button>
+                <button class="filter-btn" data-filter="research">Recerca</button>
+            </div>
+            
+            <div class="news-grid-full">
+                <article class="news-card-full hover-scale" data-category="events">
+                    <div class="news-image-full" style="background-color: #e2001a;"></div>
+                    <div class="news-content-full">
+                        <div class="news-meta">
+                            <span class="news-date">15 Octubre 2024</span>
+                            <span class="news-category">Esdeveniments</span>
+                        </div>
+                        <h3 class="news-title">Rècord de participació en la darrera cursa</h3>
+                        <p class="news-excerpt">Més de 2,000 persones van participar en la nostra darrera cursa solidària, recaptant 15,000 euros per a la recerca. L'esdeveniment va tenir lloc al parc de la Ciutadella i va comptar amb la participació de famílies, esportistes i voluntaris.</p>
+                        <a href="#" class="read-more">Llegeix més <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <article class="news-card-full hover-scale" data-category="collaborations">
+                    <div class="news-image-full" style="background-color: #004481;"></div>
+                    <div class="news-content-full">
+                        <div class="news-meta">
+                            <span class="news-date">8 Octubre 2024</span>
+                            <span class="news-category">Col·laboracions</span>
+                        </div>
+                        <h3 class="news-title">Nova col·laboració amb empreses locals</h3>
+                        <p class="news-excerpt">Diverses empreses de la comarca s'han unit a la nostra causa, augmentant el nostre impacte solidari. Aquestes col·laboracions ens permetran organitzar més esdeveniments i arribar a més persones.</p>
+                        <a href="#" class="read-more">Llegeix més <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <article class="news-card-full hover-scale" data-category="research">
+                    <div class="news-image-full" style="background-color: #ffd100;"></div>
+                    <div class="news-content-full">
+                        <div class="news-meta">
+                            <span class="news-date">1 Octubre 2024</span>
+                            <span class="news-category">Recerca</span>
+                        </div>
+                        <h3 class="news-title">Els avenços en recerca que has fet possible</h3>
+                        <p class="news-excerpt">Gràcies a les teves donacions, s'han pogut finançar 3 nous projectes d'investigació sobre malalties minoritàries. Aquests projectes estan donant esperança a milers de famílies.</p>
+                        <a href="#" class="read-more">Llegeix més <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <article class="news-card-full hover-scale" data-category="events">
+                    <div class="news-image-full" style="background-color: #e2001a;"></div>
+                    <div class="news-content-full">
+                        <div class="news-meta">
+                            <span class="news-date">25 Setembre 2024</span>
+                            <span class="news-category">Esdeveniments</span>
+                        </div>
+                        <h3 class="news-title">Preparant la propera caminada solidària</h3>
+                        <p class="news-excerpt">Estem organitzant una caminada solidària que tindrà lloc el proper mes de novembre. Ja hem obert les inscripcions i esperem superar els 1,000 participants.</p>
+                        <a href="#" class="read-more">Llegeix més <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <article class="news-card-full hover-scale" data-category="collaborations">
+                    <div class="news-image-full" style="background-color: #004481;"></div>
+                    <div class="news-content-full">
+                        <div class="news-meta">
+                            <span class="news-date">18 Setembre 2024</span>
+                            <span class="news-category">Col·laboracions</span>
+                        </div>
+                        <h3 class="news-title">Ampliem la nostra xarxa de voluntaris</h3>
+                        <p class="news-excerpt">Hem arribat als 1,500 voluntaris registrats. Aquest creixement ens permet arribar a més llocs i organitzar esdeveniments simultanis en diferents ciutats.</p>
+                        <a href="#" class="read-more">Llegeix més <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <article class="news-card-full hover-scale" data-category="research">
+                    <div class="news-image-full" style="background-color: #ffd100;"></div>
+                    <div class="news-content-full">
+                        <div class="news-meta">
+                            <span class="news-date">10 Setembre 2024</span>
+                            <span class="news-category">Recerca</span>
+                        </div>
+                        <h3 class="news-title">Entrevista amb la Dra. Elena Martínez</h3>
+                        <p class="news-excerpt">Parlem amb una de les investigadores que està participant en un projecte finançat per la Marató. Ens explica els avenços i els reptes de la recerca en malalties minoritàries.</p>
+                        <a href="#" class="read-more">Llegeix més <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+            </div>
+            
+            <div class="pagination">
+                <a href="#" class="page-link active">1</a>
+                <a href="#" class="page-link">2</a>
+                <a href="#" class="page-link">3</a>
+                <a href="#" class="page-link next">Següent <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <span class="logo-text">Cooperativa</span>
+                        <span class="logo-highlight">Marató TV3</span>
+                    </div>
+                    <p>Una iniciativa solidaria per donar suport a la recerca mèdica a través de la Marató de TV3.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Enllaços ràpids</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html" class="hover-underline">Inici</a></li>
+                        <li><a href="index.html#sobre-nosaltres" class="hover-underline">Sobre Nosaltres</a></li>
+                        <li><a href="events.html" class="hover-underline">Esdeveniments</a></li>
+                        <li><a href="news.html" class="hover-underline">Notícies</a></li>
+                        <li><a href="index.html#contacte" class="hover-underline">Contacte</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Col·labora</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html#contacte" class="hover-underline">Fes-te voluntari</a></li>
+                        <li><a href="index.html#contacte" class="hover-underline">Organitza un esdeveniment</a></li>
+                        <li><a href="index.html#contacte" class="hover-underline">Empreses col·laboradores</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" class="hover-underline">Política de privacitat</a></li>
+                        <li><a href="#" class="hover-underline">Avís legal</a></li>
+                        <li><a href="#" class="hover-underline">Cookies</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Cooperativa Marató TV3. Tots els drets reservats.</p>
+                <p>Projecte solidari sense ànim de lucre.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
