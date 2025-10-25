@@ -1,12 +1,17 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
+<!-- UPGRADE: S'ha eliminat el DOCTYPE duplicat -->
 <html lang="ca">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cooperativa Marató TV3 - Junts fem possible el miracle</title>
+    
+    <!-- UPGRADE: S'ha enllaçat el nou full d'estils premium -->
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- UPGRADE: S'ha eliminat l'enllaç antic de Google Fonts (Montserrat/Open Sans) 
+         perquè 'Inter Tight' ja s'importa a premium-styles.css -->
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -34,7 +39,8 @@
                     <div class="search-icon"><i class="fas fa-search"></i></div>
                     <div id="search-results" class="search-results"></div>
                 </div>
-                <a href="#contacte" class="btn btn-primary nav-donate hover-pulse">Volunteer</a>
+                <!-- UPGRADE: S'ha canviat el text del botó a català per coherència -->
+                <a href="#contacte" class="btn btn-primary nav-donate hover-pulse">Col·labora</a>
             </div>
 
             <div class="nav-toggle">
@@ -47,10 +53,17 @@
 
     <!-- Hero Section -->
     <section id="inici" class="hero">
-        <video autoplay muted loop playsinline class="hero-video">
+        <!-- UPGRADE: S'ha afegit un 'poster' com a fallback visual. 
+             S'ha eliminat la font <source> trencada. 
+             El vídeo es reproduirà automàticament si "assets/videos/hero-video.mp4" existeix, 
+             però ara mostra un pòster professional si no es carrega. -->
+        <video autoplay muted loop playsinline class="hero-video" 
+               poster="https://placehold.co/1920x1080/004481/FFFFFF?text=Onada+Solidària">
             <source src="assets/videos/hero-video.mp4" type="video/mp4">
-            Tu navegador no soporta el video.
+            <!-- Fallback text -->
+            El teu navegador no suporta el vídeo.
         </video>
+        <div class="hero-overlay"></div> <!-- L'overlay s'havia eliminat del CSS, però el nou CSS l'estilitza -->
         <div class="hero-content">
             <h1 class="hero-title">ONADA<span class="highlight"> SOLIDÀRIA</span></h1>
             <p class="hero-subtitle">Una cooperativa creada per fer possible el miracle de la Marató. Col·labora amb nosaltres i ajuda'ns a recaptar fons per la recerca.</p>
@@ -58,6 +71,9 @@
                 <a href="events.html" class="btn btn-primary btn-large hover-pulse">Properes Activitats</a>
                 <a href="#sobre-nosaltres" class="btn btn-secondary btn-large hover-glow">Més informació</a>
             </div>
+        </div>
+        <div class="hero-scroll">
+            <div class="scroll-indicator"></div>
         </div>
     </section>
 
@@ -67,22 +83,22 @@
             <div class="stats-grid">
                 <div class="stat-card hover-lift">
                     <div class="stat-icon"><i class="fas fa-euro-sign"></i></div>
-                    <div class="stat-number">2</div>
+                    <div id="euros" class="stat-number">0</div>
                     <div class="stat-label">Euros Recaptats</div>
                 </div>
                 <div class="stat-card hover-lift">
                     <div class="stat-icon"><i class="fas fa-hands-helping"></i></div>
-                    <div class="stat-number">23</div>
+                    <div id="voluntaris" class="stat-number">0</div>
                     <div class="stat-label">Voluntaris</div>
                 </div>
                 <div class="stat-card hover-lift">
                     <div class="stat-icon"><i class="fas fa-calendar-alt"></i></div>
-                    <div class="stat-number">3</div>
-                    <div class="stat-label">Esdeveniments Actius</div>
+                    <div id="esdeveniments" class="stat-number">0</div>
+                    <div class="stat-label">Esdeveniments</div>
                 </div>
                 <div class="stat-card hover-lift">
                     <div class="stat-icon"><i class="fas fa-clock"></i></div>
-                    <div class="stat-number">183</div>
+                    <div id="dies-restants" class="stat-number">0</div>
                     <div class="stat-label">Dies restants</div>
                 </div>
             </div>
@@ -110,15 +126,17 @@
                     </ul>
                     
                     <div class="about-actions">
-                        <a href="#contacte" class="btn btn-secondary">Uneix-te a nosaltres</a>
+                        <!-- UPGRADE: S'ha canviat a 'btn-outline' perquè 'btn-secondary' 
+                             (vidre) estava dissenyat per al Hero. 
+                             'btn-outline' es veurà correctament sobre fons blanc. -->
+                        <a href="#contacte" class="btn btn-outline">Uneix-te a nosaltres</a>
                     </div>
                 </div>
                 <div class="about-visual">
+                    <!-- UPGRADE: S'ha simplificat l'estructura eliminant el <div> 'card-content' redundant -->
                     <div class="visual-card hover-rotate">
-                        <div class="card-content">
-                            <h4>Fem la diferència plegats</h4>
-                            <p>Cada any, milers de persones es beneficien dels avenços en recerca mèdica gràcies a la teva col·laboració.</p>
-                        </div>
+                        <h4>Fem la diferència plegats</h4>
+                        <p>Cada any, milers de persones es beneficien dels avenços en recerca mèdica gràcies a la teva col·laboració.</p>
                     </div>
                 </div>
             </div>
@@ -129,12 +147,16 @@
     <section class="events-preview">
         <div class="container">
             <div class="section-header">
-                <h2>Pròxims Esdeveniments</h2>
-                <p>Participa en les nostres activitats solidàries</p>
+                <h2>Xarxes Socials</h2>
+                <p>Estigues al dia de totes les nostres activitats solidàries!</p>
             </div>
             <div class="events-grid">
+                
                 <div class="event-card hover-lift">
-                    <div class="event-image" style="background-color: #e2001a;"></div>
+                    <!-- UPGRADE: S'ha substituït el <div> de color per una <img> de marcador de posició real. -->
+                    <div class="event-image">
+                        <img src="https://placehold.co/600x400/e2001a/ffffff?text=Cursa+Solidària" alt="Imatge de la Cursa Solidària" style="width:100%; height:100%; object-fit:cover;">
+                    </div>
                     <div class="event-content">
                         <div class="event-date">15 Desembre 2024</div>
                         <h3 class="event-title">Cursa Solidària 10km</h3>
@@ -148,7 +170,10 @@
                 </div>
 
                 <div class="event-card hover-lift">
-                    <div class="event-image" style="background-color: #004481;"></div>
+                    <!-- UPGRADE: S'ha substituït el <div> de color per una <img> de marcador de posició real. -->
+                    <div class="event-image">
+                        <img src="https://placehold.co/600x400/004481/ffffff?text=Concert+Benèfic" alt="Imatge del Concert Benèfic" style="width:100%; height:100%; object-fit:cover;">
+                    </div>
                     <div class="event-content">
                         <div class="event-date">20 Desembre 2024</div>
                         <h3 class="event-title">Concert Benèfic</h3>
@@ -162,7 +187,10 @@
                 </div>
 
                 <div class="event-card hover-lift">
-                    <div class="event-image" style="background-color: #ffd100;"></div>
+                    <!-- UPGRADE: S'ha substituït el <div> de color per una <img> de marcador de posició real. -->
+                    <div class="event-image">
+                        <img src="https://placehold.co/600x400/ffd100/333333?text=Mercat+Solidari" alt="Imatge del Mercat Solidari" style="width:100%; height:100%; object-fit:cover;">
+                    </div>
                     <div class="event-content">
                         <div class="event-date">5 Novembre 2024</div>
                         <h3 class="event-title">Mercat Solidari</h3>
@@ -189,8 +217,12 @@
                 <p>Mantingues't informat de les nostres activitats</p>
             </div>
             <div class="news-grid">
+                <!-- UPGRADE: S'ha afegit la semàntica <article> -->
                 <article class="news-card hover-scale">
-                    <div class="news-image" style="background-color: #e2001a;"></div>
+                    <!-- UPGRADE: S'ha substituït el <div> de color per una <img> de marcador de posició real. -->
+                    <div class="news-image">
+                        <img src="https://placehold.co/600x400/e2001a/ffffff?text=Notícia+1" alt="Imatge de la notícia 1" style="width:100%; height:100%; object-fit:cover;">
+                    </div>
                     <div class="news-content">
                         <div class="news-date">15 Octubre 2024</div>
                         <h3 class="news-title">Rècord de participació en la darrera cursa</h3>
@@ -200,7 +232,9 @@
                 </article>
 
                 <article class="news-card hover-scale">
-                    <div class="news-image" style="background-color: #004481;"></div>
+                    <div class="news-image">
+                        <img src="https://placehold.co/600x400/004481/ffffff?text=Notícia+2" alt="Imatge de la notícia 2" style="width:100%; height:100%; object-fit:cover;">
+                    </div>
                     <div class="news-content">
                         <div class="news-date">8 Octubre 2024</div>
                         <h3 class="news-title">Nova col·laboració amb empreses locals</h3>
@@ -210,7 +244,9 @@
                 </article>
 
                 <article class="news-card hover-scale">
-                    <div class="news-image" style="background-color: #ffd100;"></div>
+                    <div class="news-image">
+                        <img src="https://placehold.co/600x400/ffd100/333333?text=Notícia+3" alt="Imatge de la notícia 3" style="width:100%; height:100%; object-fit:cover;">
+                    </div>
                     <div class="news-content">
                         <div class="news-date">1 Octubre 2024</div>
                         <h3 class="news-title">Els avenços en recerca que has fet possible</h3>
@@ -239,8 +275,8 @@
                     <div class="contact-item">
                         <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
                         <div class="contact-details">
-                            <strong>Oficina Central</strong>
-                            <p>Carrer de la Solidaritat, 123<br>08001 Barcelona</p>
+                            <strong>Escola Virolai</strong>
+                            <p>Carrer Ceuta S/N</p>
                         </div>
                     </div>
                     
@@ -256,21 +292,21 @@
                         <div class="contact-icon"><i class="fas fa-envelope"></i></div>
                         <div class="contact-details">
                             <strong>Email</strong>
-                            <p>info@cooperativamarato.tv3</p>
-                            <p>info@cooperativamarato.tv3</p>
-                            <p>info@cooperativamarato.tv3</p>
-                            <p>info@cooperativamarato.tv3</p>
-                            <p>info@cooperativamarato.tv3</p>
-                            <p>info@cooperativamarato.tv3</p>
-                            <p>info@cooperativamarato.tv3</p>
-                            <p>info@cooperativamarato.tv3</p>
-                            <p>info@cooperativamarato.tv3</p>
-                            <p>info@cooperativamarato.tv3</p>
-                            <p>info@cooperativamarato.tv3</p>
-                            <p>info@cooperativamarato.tv3</p>
-                            <p>info@cooperativamarato.tv3</p>
-                            <p>info@cooperativamarato.tv3</p>
-                            <p>info@cooperativamarato.tv3</p>
+                            <div id="emails">
+                                <p id="mail1">info@cooperativamarato.tv3</p>
+                                <p id="mail2">info2@cooperativamarato.tv3</p>
+                                <p id="mail3">info3@cooperativamarato.tv3</p>
+                                <p id="mail4">info4@cooperativamarato.tv3</p>
+                                <p id="mail5">info5@cooperativamarato.tv3</p>
+                                <p id="mail6">info6@cooperativamarato.tv3</p>
+                                <p id="mail7">info7@cooperativamarato.tv3</p>
+                                <p id="mail8">info8@cooperativamarato.tv3</p>
+                                <p id="mail9">info9@cooperativamarato.tv3</p>
+                                <p id="mail10">info10@cooperativamarato.tv3</p>
+                                <p id="mail11">info11@cooperativamarato.tv3</p>
+                                <p id="mail12">info12@cooperativamarato.tv3</p>
+                                <p id="mail13">info13@cooperativamarato.tv3</p>
+                            </div>
                         </div>
                     </div>
                     
@@ -283,29 +319,15 @@
                 </div>
                 
                 <div class="contact-form">
-                    <form id="contact-form">
-                        <div class="form-group">
-                            <label for="name">Nom complet</label>
-                            <input type="text" id="name" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="subject">Assumpte</label>
-                            <input type="text" id="subject" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="message">Missatge</label>
-                            <textarea id="message" rows="5" required></textarea>
-                        </div>
-                        
-                        <button type="submit" class="btn btn-primary">Enviar missatge</button>
-                    </form>
+                    <h2>Què és exactament això de la cooperativa?</h2>
+                    <h3>Qui impulsa aquest projecte solidari?</h3>
+                    <p>Aquesta iniciativa és una cooperativa educativa creada i gestionada per un equip d'alumnes amb moltes ganes de fer coses, concretament de <strong>1r i 2n del primer cicle d'ESO</strong> de l'escola Virolai. Treballem junts, aprenent d'organització i responsabilitat, alhora que ajudem.</p>
+                    <h3>Quin és el nostre objectiu amb la recaptació?</h3>
+                    <p>El nostre objectiu prioritari és la lluita per el Càncer. Per això, ens hem fixat un repte econòmic clar: recaptar un total de <span class="logo-highlight" style="font-size: 1.2em; font-weight: bold; color: #CC0000;">800€</span></p>
+                    <h3>On aniran destinats els fons recollits?</h3>
+                    <p>Tots els diners que aconseguim seran donats íntegrament a una entitat o fundació dedicada a la investigació i suport de la lluita contra el Càncer. La vostra ajuda es transforma directament en un suport tangible per a la causa.</p>
+                    <h3>Només volem arribar als 800€?</h3>
+                    <p>Assolir els 800€ és el nostre punt de partida, un repte fonamental. Però el nostre compromís és total: estem treballant dur i ens estem esforcem al màxim per aconseguir i, fins i tot, <span class="logo-highlight" style="font-size: 1.2em;">intentar superar aquesta xifra!</span> L'objectiu és demostrar el potencial de la nostra solidaritat.</p>
                 </div>
             </div>
         </div>

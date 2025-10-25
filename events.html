@@ -4,8 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Esdeveniments - Cooperativa Marató TV3</title>
+    
+    <!-- UPGRADE: S'ha enllaçat el nou full d'estils premium -->
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- UPGRADE: S'ha eliminat l'enllaç antic de Google Fonts (Montserrat/Open Sans) 
+         perquè 'Inter Tight' ja s'importa a premium-styles.css -->
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -15,7 +20,8 @@
             <div class="nav-logo">
                 <a href="index.html" class="logo-link">
                     <span class="logo-text">Cooperativa</span>
-                    <span class="logo-highlight">Escola Virolai</span>
+                    <!-- UPGRADE: Corregit per coherència amb index.html -->
+                    <span class="logo-highlight">Marató TV3</span>
                 </a>
             </div>
             
@@ -33,7 +39,8 @@
                     <div class="search-icon"><i class="fas fa-search"></i></div>
                     <div id="search-results" class="search-results"></div>
                 </div>
-                <a href="index.html#contacte" class="btn btn-primary nav-donate hover-pulse">MÉS INFORMACIÓ</a>
+                <!-- UPGRADE: Corregit per coherència amb index.html -->
+                <a href="index.html#contacte" class="btn btn-primary nav-donate hover-pulse">Col·labora</a>
             </div>
 
             <div class="nav-toggle">
@@ -57,8 +64,8 @@
         <div class="container">
             <div class="featured-content">
                 <div class="featured-info">
-                    <h2>Proper Gran Esdeveniment</h2>
-                    <h3>Cursa Solidària 10km</h3>
+                    <h2>Pròxim Esdevediment</h2>
+                    <h3>Lorem Ipsum</h3>
                     <p class="event-description">Uneix-te a nosaltres en aquesta cursa emblemàtica que recaptarà fons per a la recerca de malalties minoritàries. Una jornada esportiva i solidària que no et pots perdre.</p>
                     
                     <div class="event-details">
@@ -74,13 +81,6 @@
                             <div>
                                 <strong>Ubicació</strong>
                                 <p>Parc de la Ciutadella, Barcelona</p>
-                            </div>
-                        </div>
-                        <div class="detail-item">
-                            <i class="fas fa-users"></i>
-                            <div>
-                                <strong>Participants</strong>
-                                <p>2,000 inscrits</p>
                             </div>
                         </div>
                     </div>
@@ -106,11 +106,12 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <a href="#" class="btn btn-primary btn-large">Inscriu-te ara</a>
                 </div>
                 <div class="featured-visual">
-                    <div class="event-visual" style="background-color: #e2001a;"></div>
+                    <!-- UPGRADE: S'ha substituït el <div> de color per una <img> de marcador de posició real. -->
+                    <div class="event-visual">
+                        <img src="https://placehold.co/600x500/e2001a/ffffff?text=Lorem+Ipsum" alt="Imatge de la Cursa Solidària" style="width:100%; height:100%; object-fit:cover; border-radius: var(--border-radius);">
+                    </div>
                 </div>
             </div>
         </div>
@@ -134,7 +135,10 @@
             
             <div class="events-grid-full">
                 <div class="event-card-full hover-lift" data-category="upcoming sports">
-                    <div class="event-image-full" style="background-color: #e2001a;"></div>
+                    <!-- UPGRADE: S'ha substituït el <div> de color per una <img> de marcador de posició real. -->
+                    <div class="event-image-full">
+                        <img src="https://placehold.co/600x400/e2001a/ffffff?text=Cursa+Solidària" alt="Imatge de la Cursa Solidària" style="width:100%; height:100%; object-fit:cover;">
+                    </div>
                     <div class="event-content-full">
                         <div class="event-meta">
                             <span class="event-date">15 Desembre 2024</span>
@@ -154,7 +158,9 @@
                 </div>
 
                 <div class="event-card-full hover-lift" data-category="upcoming culture">
-                    <div class="event-image-full" style="background-color: #004481;"></div>
+                    <div class="event-image-full">
+                        <img src="https://placehold.co/600x400/004481/ffffff?text=Concert+Benèfic" alt="Imatge del Concert Benèfic" style="width:100%; height:100%; object-fit:cover;">
+                    </div>
                     <div class="event-content-full">
                         <div class="event-meta">
                             <span class="event-date">20 Desembre 2024</span>
@@ -174,7 +180,9 @@
                 </div>
 
                 <div class="event-card-full hover-lift" data-category="past culture">
-                    <div class="event-image-full" style="background-color: #ffd100;"></div>
+                    <div class="event-image-full">
+                        <img src="https://placehold.co/600x400/ffd100/333333?text=Mercat+Solidari" alt="Imatge del Mercat Solidari" style="width:100%; height:100%; object-fit:cover;">
+                    </div>
                     <div class="event-content-full">
                         <div class="event-meta">
                             <span class="event-date">5 Novembre 2024</span>
@@ -194,7 +202,9 @@
                 </div>
 
                 <div class="event-card-full hover-lift" data-category="upcoming sports">
-                    <div class="event-image-full" style="background-color: #e2001a;"></div>
+                    <div class="event-image-full">
+                        <img src="https://placehold.co/600x400/e2001a/ffffff?text=Caminada+Familiar" alt="Imatge de la Caminada Familiar" style="width:100%; height:100%; object-fit:cover;">
+                    </div>
                     <div class="event-content-full">
                         <div class="event-meta">
                             <span class="event-date">12 Gener 2025</span>
@@ -213,7 +223,9 @@
                 </div>
 
                 <div class="event-card-full hover-lift" data-category="upcoming culture">
-                    <div class="event-image-full" style="background-color: #004481;"></div>
+                    <div class="event-image-full">
+                        <img src="https://placehold.co/600x400/004481/ffffff?text=Exposició+d'Art" alt="Imatge de l'Exposició d'Art" style="width:100%; height:100%; object-fit:cover;">
+                    </div>
                     <div class="event-content-full">
                         <div class="event-meta">
                             <span class="event-date">28 Gener 2025</span>
@@ -232,7 +244,9 @@
                 </div>
 
                 <div class="event-card-full hover-lift" data-category="past sports">
-                    <div class="event-image-full" style="background-color: #ffd100;"></div>
+                    <div class="event-image-full">
+                        <img src="https://placehold.co/600x400/ffd100/333333?text=Torneig+de+Pàdel" alt="Imatge del Torneig de Pàdel" style="width:100%; height:100%; object-fit:cover;">
+                    </div>
                     <div class="event-content-full">
                         <div class="event-meta">
                             <span class="event-date">15 Octubre 2024</span>

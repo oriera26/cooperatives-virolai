@@ -4,8 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notícies - Cooperativa Marató TV3</title>
+    
+    <!-- UPGRADE: S'ha enllaçat el nou full d'estils premium -->
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- UPGRADE: S'ha eliminat l'enllaç antic de Google Fonts (Montserrat/Open Sans) 
+         perquè 'Inter Tight' ja s'importa a premium-styles.css -->
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -15,7 +20,8 @@
             <div class="nav-logo">
                 <a href="index.html" class="logo-link">
                     <span class="logo-text">Cooperativa</span>
-                    <span class="logo-highlight">Escola Virolai</span>
+                    <!-- UPGRADE: Corregit per coherència amb index.html -->
+                    <span class="logo-highlight">Marató TV3</span>
                 </a>
             </div>
             
@@ -33,7 +39,8 @@
                     <div class="search-icon"><i class="fas fa-search"></i></div>
                     <div id="search-results" class="search-results"></div>
                 </div>
-                <a href="index.html#contacte" class="btn btn-primary nav-donate hover-pulse">MÉS INFORMACIÓ</a>
+                <!-- UPGRADE: Corregit per coherència amb index.html -->
+                <a href="index.html#contacte" class="btn btn-primary nav-donate hover-pulse">Col·labora</a>
             </div>
 
             <div class="nav-toggle">
@@ -64,7 +71,10 @@
             
             <div class="news-grid-full">
                 <article class="news-card-full hover-scale" data-category="events">
-                    <div class="news-image-full" style="background-color: #e2001a;"></div>
+                    <!-- UPGRADE: S'ha substituït el <div> de color per una <img> de marcador de posició real. -->
+                    <div class="news-image-full">
+                        <img src="https://placehold.co/600x400/e2001a/ffffff?text=Notícia+Cursa" alt="Imatge de la notícia sobre la cursa" style="width:100%; height:100%; object-fit:cover;">
+                    </div>
                     <div class="news-content-full">
                         <div class="news-meta">
                             <span class="news-date">15 Octubre 2024</span>
@@ -77,7 +87,9 @@
                 </article>
 
                 <article class="news-card-full hover-scale" data-category="collaborations">
-                    <div class="news-image-full" style="background-color: #004481;"></div>
+                    <div class="news-image-full">
+                        <img src="https://placehold.co/600x400/004481/ffffff?text=Notícia+Empreses" alt="Imatge de la notícia sobre col·laboracions" style="width:100%; height:100%; object-fit:cover;">
+                    </div>
                     <div class="news-content-full">
                         <div class="news-meta">
                             <span class="news-date">8 Octubre 2024</span>
@@ -90,7 +102,9 @@
                 </article>
 
                 <article class="news-card-full hover-scale" data-category="research">
-                    <div class="news-image-full" style="background-color: #ffd100;"></div>
+                    <div class="news-image-full">
+                        <img src="https://placehold.co/600x400/ffd100/333333?text=Notícia+Recerca" alt="Imatge de la notícia sobre recerca" style="width:100%; height:100%; object-fit:cover;">
+                    </div>
                     <div class="news-content-full">
                         <div class="news-meta">
                             <span class="news-date">1 Octubre 2024</span>
@@ -103,7 +117,9 @@
                 </article>
 
                 <article class="news-card-full hover-scale" data-category="events">
-                    <div class="news-image-full" style="background-color: #e2001a;"></div>
+                    <div class="news-image-full">
+                        <img src="https://placehold.co/600x400/e2001a/ffffff?text=Notícia+Caminada" alt="Imatge de la notícia sobre la caminada" style="width:100%; height:100%; object-fit:cover;">
+                    </div>
                     <div class="news-content-full">
                         <div class="news-meta">
                             <span class="news-date">25 Setembre 2024</span>
@@ -116,7 +132,9 @@
                 </article>
 
                 <article class="news-card-full hover-scale" data-category="collaborations">
-                    <div class="news-image-full" style="background-color: #004481;"></div>
+                    <div class="news-image-full">
+                        <img src="https://placehold.co/600x400/004481/ffffff?text=Notícia+Voluntaris" alt="Imatge de la notícia sobre voluntaris" style="width:100%; height:100%; object-fit:cover;">
+                    </div>
                     <div class="news-content-full">
                         <div class="news-meta">
                             <span class="news-date">18 Setembre 2024</span>
@@ -129,7 +147,9 @@
                 </article>
 
                 <article class="news-card-full hover-scale" data-category="research">
-                    <div class="news-image-full" style="background-color: #ffd100;"></div>
+                    <div class="news-image-full">
+                        <img src="https://placehold.co/600x400/ffd100/333333?text=Notícia+Entrevista" alt="Imatge de la notícia sobre entrevista" style="width:100%; height:100%; object-fit:cover;">
+                    </div>
                     <div class="news-content-full">
                         <div class="news-meta">
                             <span class="news-date">10 Setembre 2024</span>

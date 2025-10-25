@@ -1,42 +1,3 @@
-  // Emails que quieres mostrar
-  const emails = [
-    "oriera@virolai.com",
-    "contacto@virolai.com",
-    "info@virolai.com",
-    "ventas@virolai.com"
-  ];
-
-  let currentIndex = 0;
-
-  const emailCurrent = document.getElementById('email-current');
-  const emailNext = document.getElementById('email-next');
-
-  function tickEmail() {
-    let nextIndex = (currentIndex + 1) % emails.length;
-
-    emailNext.textContent = emails[nextIndex];
-    emailNext.style.visibility = 'visible';
-    emailNext.style.top = '50px';
-
-    // Forzar reflow para que la transición funcione en cada tick
-    emailCurrent.offsetHeight;
-    emailNext.offsetHeight;
-
-    // Animar subida y bajada
-    emailCurrent.style.top = '-50px';
-
-    setTimeout(() => {
-      emailCurrent.textContent = emails[nextIndex];
-      emailCurrent.style.top = '0px';
-      emailNext.style.visibility = 'hidden';
-      emailNext.style.top = '50px';
-
-      currentIndex = nextIndex;
-    }, 500);
-  }
-
-  setInterval(tickEmail, 6000);
-
 // Cooperativa Marató TV3 - Script Principal
 document.addEventListener('DOMContentLoaded', function() {
     // Inicialitzar totes les funcionalitats
@@ -55,7 +16,38 @@ document.addEventListener('DOMContentLoaded', function() {
     if (document.querySelector('.news-filters') || document.querySelector('.events-filters')) {
         initFilters();
     }
+
+    // Inicialització de càrrega de dades per a comptadors (euros, voluntaris, etc.)
+    initData(); 
+    iniciarTicker();
 });
+
+function iniciarTicker() {
+            const div = document.querySelector('#emails');
+            const paragrafs = div.querySelectorAll('p');
+            let indexActual = 0;
+
+            // Amaga tots els paràgrafs inicialment afegint una classe
+            paragrafs.forEach(p => p.classList.add('amagat'));
+
+            // Mostra el primer element
+            paragrafs[indexActual].classList.remove('amagat');
+            paragrafs[indexActual].classList.add('visible');
+
+            setInterval(() => {
+                // Amaga el paràgraf actual
+                paragrafs[indexActual].classList.add('amagat');
+                paragrafs[indexActual].classList.remove('visible');
+
+                // Avança a el següent paràgraf
+                indexActual = (indexActual + 1) % paragrafs.length;
+
+                // Mostra el nou paràgraf actual
+                paragrafs[indexActual].classList.remove('amagat');
+                paragrafs[indexActual].classList.add('visible');
+            }, 3000);
+        }
+
 
 // Navbar i menú mòbil
 function initNavbar() {
@@ -81,12 +73,14 @@ function initNavbar() {
     // Canviar navbar en scroll
     window.addEventListener('scroll', function() {
         const navbar = document.querySelector('.navbar');
-        if (window.scrollY > 100) {
-            navbar.style.background = 'rgba(255, 255, 255, 0.98)';
-            navbar.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
-        } else {
-            navbar.style.background = 'rgba(255, 255, 255, 0.95)';
-            navbar.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+        if (navbar) { // Afegit check per evitar errors si no hi ha navbar
+            if (window.scrollY > 100) {
+                navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+                navbar.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
+            } else {
+                navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+                navbar.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+            }
         }
     });
 }
@@ -159,14 +153,17 @@ function initSearch() {
 // Animacions de comptadors
 function initCounters() {
     const counters = document.querySelectorAll('.stat-number');
-    const speed = 200;
+    const speed = 200; // Durada de l'animació en mil·lisegons
     
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const counter = entry.target;
-                const target = parseInt(counter.getAttribute('data-count'));
-                animateCounter(counter, target, speed);
+                // Assegurar que el data-count és un nombre
+                const target = parseInt(counter.getAttribute('data-count')); 
+                if (!isNaN(target)) {
+                    animateCounter(counter, target, speed);
+                }
                 observer.unobserve(counter);
             }
         });
@@ -176,36 +173,85 @@ function initCounters() {
     
     function animateCounter(counter, target, duration) {
         let start = 0;
-        const increment = target / (duration / 16);
+        // El càlcul de l'increment ha de tenir en compte la durada per frame (aprox 16ms)
+        const increment = target / (duration / 16); 
         
+        // Funció per a l'animació utilitzant requestAnimationFrame per a un rendiment més suau
         function updateCounter() {
             start += increment;
             if (start < target) {
-                counter.textContent = Math.floor(start).toLocaleString();
+                // Afegit toLocaleString per formatar els nombres grans amb separadors de milers
+                counter.textContent = Math.floor(start).toLocaleString('ca-ES'); 
                 requestAnimationFrame(updateCounter);
             } else {
-                counter.textContent = target.toLocaleString();
+                counter.textContent = target.toLocaleString('ca-ES');
             }
         }
         
-        updateCounter();
+        requestAnimationFrame(updateCounter); // Utilitzar requestAnimationFrame per al primer frame
     }
-    
-    // Actualitzar comptador de dies
-    updateDaysCounter();
 }
 
-function updateDaysCounter() {
-    const marathonDate = new Date('2024-12-15');
-    const today = new Date();
-    const diffTime = marathonDate - today;
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    
-    const daysCounter = document.querySelector('[data-count="32"]');
-    if (daysCounter && diffDays > 0) {
-        daysCounter.setAttribute('data-count', diffDays);
+// Funció que carrega les dades (abans 'carregarDades')
+async function initData() {
+    try {
+        // En un entorn real, aquesta URL seria la ruta al teu fitxer data.json
+        // Per aquest exemple, fem servir dades simulades
+        // const resposta = await fetch('data.json');
+        // const dades = await resposta.json();
+
+        // Dades simulades per evitar errors si data.json no existeix
+        const dades = {
+            euros: 2,
+            voluntaris: 23,
+            esdeveniments: 0,
+            dataLimit: '2025-12-15' // Data de límit diferent per a provar
+        };
+
+        // Actualitzem les estadístiques, utilitzant data-count per a initCounters()
+        const eurosElement = document.getElementById('euros');
+        const voluntarisElement = document.getElementById('voluntaris');
+        const esdevenimentsElement = document.getElementById('esdeveniments');
+        
+        if (eurosElement) eurosElement.setAttribute('data-count', dades.euros);
+        if (voluntarisElement) voluntarisElement.setAttribute('data-count', dades.voluntaris);
+        if (esdevenimentsElement) esdevenimentsElement.setAttribute('data-count', dades.esdeveniments);
+        
+        // El codi initCounters() ja s'encarrega d'animar els comptadors
+        
+        // Calculem i mostrem els dies restants (si cal)
+        const diesRestants = calcularDiesRestants(dades.dataLimit);
+        const diesRestantsElement = document.getElementById('dies-restants');
+        if (diesRestantsElement) diesRestantsElement.textContent = diesRestants;
+        
+        // Mostrem la data límit formatejada (si cal)
+        const dataLimit = new Date(dades.dataLimit);
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        const dataLimitElement = document.getElementById('data-limit');
+        if (dataLimitElement) dataLimitElement.textContent = dataLimit.toLocaleDateString('ca-ES', options);
+
+    } catch (error) {
+        console.error('Error carregant les dades:', error);
+        // En cas d'error, carreguem dades per defecte
+        // Nota: initCounters() es crida abans, caldria reajustar si es vol animar dades per defecte
     }
 }
+
+// Funció per calcular els dies restants fins a una data
+function calcularDiesRestants(dataLimit) {
+    const dataActual = new Date();
+    const dataFinal = new Date(dataLimit);
+    
+    // Calculem la diferència en mil·lisegons
+    const diferènciaMs = dataFinal - dataActual;
+    
+    // Convertim a dies (1 dia = 24 hores * 60 minuts * 60 segons * 1000 ms)
+    const diesRestants = Math.ceil(diferènciaMs / (1000 * 60 * 60 * 24));
+    
+    // Si la data ja ha passat, retornem 0
+    return diesRestants > 0 ? diesRestants : 0;
+}
+
 
 // Animacions de scroll
 function initScrollAnimations() {
@@ -219,6 +265,8 @@ function initScrollAnimations() {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('animate');
+                // Opcional: Desconnectar l'observador un cop s'ha animat
+                // observer.unobserve(entry.target); 
             }
         });
     }, { threshold: 0.1 });
@@ -235,10 +283,10 @@ function initForms() {
             e.preventDefault();
             
             // Validació bàsica
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const subject = document.getElementById('subject').value;
-            const message = document.getElementById('message').value;
+            const name = document.getElementById('name')?.value;
+            const email = document.getElementById('email')?.value;
+            const subject = document.getElementById('subject')?.value;
+            const message = document.getElementById('message')?.value;
             
             if (!name || !email || !subject || !message) {
                 showNotification('Si us plau, omple tots els camps', 'error');
@@ -259,30 +307,51 @@ function initForms() {
 
 // Comptador per a esdeveniments
 function initCountdown() {
-    const countdownDate = new Date('2024-12-15T09:00:00').getTime();
+    // Data de l'esdeveniment (Marató TV3 per defecte)
+    const countdownDate = new Date('2026-01-31T23:59:59').getTime(); 
+    
+    const daysEl = document.getElementById('days');
+    const hoursEl = document.getElementById('hours');
+    const minutesEl = document.getElementById('minutes');
+    const secondsEl = document.getElementById('seconds');
+    const countdownContainer = document.getElementById('countdown');
+
+    if (!daysEl || !hoursEl || !minutesEl || !secondsEl || !countdownContainer) {
+        console.error('Un o més elements del compte enrere no es troben al DOM.');
+        return;
+    }
     
     function updateCountdown() {
         const now = new Date().getTime();
-        const distance = countdownDate - now;
+        let distance = countdownDate - now;
         
         if (distance < 0) {
-            document.getElementById('countdown').innerHTML = "<div class='countdown-finished'>L'esdeveniment ha començat!</div>";
+            // S'ha acabat el temps
+            countdownContainer.innerHTML = "<div class='countdown-finished'>L'esdeveniment ha començat!</div>";
+            clearInterval(countdownInterval); // Aturar l'interval
             return;
         }
         
+        // Càlculs de temps (utilitzem 'let' ja que 'distance' canvia)
         const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-        
-        document.getElementById('days').textContent = days.toString().padStart(2, '0');
-        document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
-        document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
-        document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+        distance %= (1000 * 60 * 60 * 24);
+        const hours = Math.floor(distance / (1000 * 60 * 60));
+        distance %= (1000 * 60 * 60);
+        const minutes = Math.floor(distance / (1000 * 60));
+        distance %= (1000 * 60);
+        const seconds = Math.floor(distance / 1000);
+
+        // Actualització dels elements del DOM amb dos dígits
+        daysEl.textContent = days.toString().padStart(2, '0');
+        hoursEl.textContent = hours.toString().padStart(2, '0');
+        minutesEl.textContent = minutes.toString().padStart(2, '0');
+        secondsEl.textContent = seconds.toString().padStart(2, '0');
     }
     
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
+    // Crida inicial per evitar el 'flicker'
+    updateCountdown(); 
+    // Crida periòdica cada segon
+    const countdownInterval = setInterval(updateCountdown, 1000); 
 }
 
 // Filtres per a notícies i esdeveniments
@@ -298,122 +367,17 @@ function initFilters() {
             this.classList.add('active');
             
             // Filtrar elements
-            if (filter === 'all') {
-                document.querySelectorAll('.news-card-full, .event-card-full').forEach(item => {
+            const items = document.querySelectorAll('.news-card-full, .event-card-full');
+            items.forEach(item => {
+                if (filter === 'all' || item.getAttribute('data-category')?.includes(filter)) {
                     item.style.display = 'block';
-                });
-            } else {
-                document.querySelectorAll('.news-card-full, .event-card-full').forEach(item => {
-                    if (item.getAttribute('data-category').includes(filter)) {
-                        item.style.display = 'block';
-                    } else {
-                        item.style.display = 'none';
-                    }
-                });
-            }
+                } else {
+                    item.style.display = 'none';
+                }
+            });
         });
     });
 }
-
-// Funció per carregar les dades del JSON
-        async function carregarDades() {
-            try {
-                // En un entorn real, aquesta URL seria la ruta al teu fitxer data.json
-                // Per aquest exemple, fem servir dades simulades
-                const resposta = await fetch('data.json');
-                const dades = await resposta.json();
-                
-                // Actualitzem les estadístiques
-                document.getElementById('euros').textContent = dades.euros;
-                document.getElementById('voluntaris').textContent = dades.voluntaris;
-                document.getElementById('esdeveniments').textContent = dades.esdeveniments;
-                
-                // Calculem i mostrem els dies restants
-                const diesRestants = calcularDiesRestants(dades.dataLimit);
-                document.getElementById('dies-restants').textContent = diesRestants;
-                
-                // Mostrem la data límit formatejada
-                const dataLimit = new Date(dades.dataLimit);
-                const options = { year: 'numeric', month: 'long', day: 'numeric' };
-                document.getElementById('data-limit').textContent = dataLimit.toLocaleDateString('ca-ES', options);
-                
-                // Iniciem les animacions de comptador
-                animarComptadors();
-            } catch (error) {
-                console.error('Error carregant les dades:', error);
-                // En cas d'error, carreguem dades per defecte
-                carregarDadesPerDefecte();
-            }
-        }
-
-        // Funció per calcular els dies restants fins a una data
-        function calcularDiesRestants(dataLimit) {
-            const dataActual = new Date();
-            const dataFinal = new Date(dataLimit);
-            
-            // Calculem la diferència en mil·lisegons
-            const diferènciaMs = dataFinal - dataActual;
-            
-            // Convertim a dies (1 dia = 24 hores * 60 minuts * 60 segons * 1000 ms)
-            const diesRestants = Math.ceil(diferènciaMs / (1000 * 60 * 60 * 24));
-            
-            // Si la data ja ha passat, retornem 0
-            return diesRestants > 0 ? diesRestants : 0;
-        }
-
-        // Funció per animar els comptadors
-        function animarComptadors() {
-            const comptadors = document.querySelectorAll('.stat-number');
-            
-            comptadors.forEach(comptador => {
-                const valorFinal = parseInt(comptador.textContent);
-                let valorActual = 0;
-                const durada = 2000; // 2 segons
-                const increment = valorFinal / (durada / 16); // Aprox. 60 fps
-                
-                const timer = setInterval(() => {
-                    valorActual += increment;
-                    
-                    if (valorActual >= valorFinal) {
-                        comptador.textContent = valorFinal;
-                        clearInterval(timer);
-                    } else {
-                        comptador.textContent = Math.floor(valorActual);
-                    }
-                }, 16);
-            });
-        }
-
-        // Funció per carregar dades per defecte en cas d'error
-        function carregarDadesPerDefecte() {
-            // Dades per defecte
-            const dadesPerDefecte = {
-                euros: 0,
-                voluntaris: 19,
-                esdeveniments: 8,
-                dataLimit: '2024-12-31'
-            };
-            
-            // Actualitzem les estadístiques amb les dades per defecte
-            document.getElementById('euros').textContent = dadesPerDefecte.euros;
-            document.getElementById('voluntaris').textContent = dadesPerDefecte.voluntaris;
-            document.getElementById('esdeveniments').textContent = dadesPerDefecte.esdeveniments;
-            
-            // Calculem i mostrem els dies restants
-            const diesRestants = calcularDiesRestants(dadesPerDefecte.dataLimit);
-            document.getElementById('dies-restants').textContent = diesRestants;
-            
-            // Mostrem la data límit formatejada
-            const dataLimit = new Date(dadesPerDefecte.dataLimit);
-            const options = { year: 'numeric', month: 'long', day: 'numeric' };
-            document.getElementById('data-limit').textContent = dataLimit.toLocaleDateString('ca-ES', options);
-            
-            // Iniciem les animacions de comptador
-            animarComptadors();
-        }
-
-        // Iniciem la càrrega de dades quan la pàgina estigui carregada
-        document.addEventListener('DOMContentLoaded', carregarDades);
 
 // Funcions auxiliars
 function isValidEmail(email) {
@@ -432,61 +396,58 @@ function showNotification(message, type = 'info') {
         </div>
     `;
     
-    // Estils per a les notificacions
-    const style = document.createElement('style');
-    style.textContent = `
-        .notification {
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            z-index: 10000;
-            min-width: 300px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            animation: slideIn 0.3s ease-out;
-        }
-        
-        .notification-success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        
-        .notification-error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-        
-        .notification-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 16px;
-        }
-        
-        .notification-close {
-            background: none;
-            border: none;
-            font-size: 1.2rem;
-            cursor: pointer;
-            margin-left: 10px;
-        }
-        
-        @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-    `;
-    
-    if (!document.querySelector('.notification-styles')) {
+    // Estils per a les notificacions (s'assumeix que són al CSS)
+    // Per a la funció autònoma, si no hi ha CSS extern
+    let style = document.querySelector('.notification-styles');
+    if (!style) {
+        style = document.createElement('style');
         style.className = 'notification-styles';
+        style.textContent = `
+            .notification {
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                z-index: 10000;
+                min-width: 300px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                animation: slideIn 0.3s ease-out;
+            }
+            .notification-success {
+                background: #d4edda;
+                color: #155724;
+                border: 1px solid #c3e6cb;
+            }
+            .notification-error {
+                background: #f8d7da;
+                color: #721c24;
+                border: 1px solid #f5c6cb;
+            }
+            .notification-content {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 12px 16px;
+            }
+            .notification-close {
+                background: none;
+                border: none;
+                font-size: 1.2rem;
+                cursor: pointer;
+                margin-left: 10px;
+                color: inherit; /* Hereda el color del text */
+            }
+            @keyframes slideIn {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+        `;
         document.head.appendChild(style);
     }
     
@@ -518,7 +479,8 @@ function initEventListeners() {
             const targetElement = document.querySelector(targetId);
             
             if (targetElement) {
-                const offsetTop = targetElement.offsetTop - 80;
+                // S'assumeix que la navbar té una altura de 80px
+                const offsetTop = targetElement.offsetTop - 80; 
                 window.scrollTo({
                     top: offsetTop,
                     behavior: 'smooth'
