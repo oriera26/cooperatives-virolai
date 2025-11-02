@@ -7,6 +7,11 @@
   3.  Ombres i vora: S'han substituït les ombres genèriques per ombres més suaus i en capes. S'ha afegit una vora subtil a les targetes.
   4.  Elements de la interfície d'usuari: S'han refinat els botons, formularis i targetes per a un aspecte menys "Bootstrap" i més "personalitzat".
   5.  Animacions: S'ha ajustat la corba d'acceleració ('easing') per a transicions més suaus.
+  
+  --- LIQUID GLASS UPGRADE (iOS 26 Concept) ---
+  6.  Glassmorphism: S'ha aplicat un efecte de vidre setinat (backdrop-filter) a la barra de navegació, targetes i formularis.
+  7.  Liquid Aurora: S'ha afegit un pseudo-element animat a les targetes per crear un efecte de "llum líquida" que es mou per sota de la superfície del vidre.
+  8.  Estil: S'ha augmentat el radi de la vora (border-radius) per a un aspecte més suau i "líquid".
 */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&display=swap');
@@ -33,7 +38,7 @@
     --gray-600: #4b5563;
     --gray-700: #374151;
     --gray-800: #1f2937;
-    --gray-900: #111827;
+    --gray-900: #202229ec;
     
     --text-dark: var(--gray-800); /* Més suau que #333 */
     --background-light: var(--gray-50); /* Més net que #f8f9fa */
@@ -49,7 +54,28 @@
 
     /* --- UPGRADE: Valors de disseny més suaus --- */
     --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); /* Easing professional */
-    --border-radius: 12px; /* Una mica més suau que 10px */
+    
+    /* --- LIQUID GLASS UPGRADE --- */
+    --border-radius: 16px; /* Més suau que 12px per a l'efecte líquid */
+    --glass-blur: blur(20px);
+    --glass-border-light: 1px solid rgba(255, 255, 255, 0.2);
+    --glass-border-dark: 1px solid rgba(0, 0, 0, 0.05);
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+    
+    /* Gradient Aurora per a l'efecte líquid */
+    --liquid-aurora: radial-gradient(
+        circle at 100% 0%, 
+        rgba(0, 225, 255, 0.15) 0%,  /* Accent */
+        rgba(226, 0, 26, 0.1) 35%,   /* Primary */
+        rgba(0, 68, 129, 0.1) 60%,   /* Secondary */
+        transparent 80%
+    );
+}
+
+/* --- LIQUID GLASS UPGRADE: Animació de l'Aurora --- */
+@keyframes liquidRotate {
+    0% { transform: rotate(0deg) scale(1.2); }
+    100% { transform: rotate(360deg) scale(1.2); }
 }
 
 * {
@@ -72,32 +98,35 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
 }
 
-/* Navbar */
+/* Navbar - Full Width con más espacio entre elementos */
 .navbar {
-    background: rgba(255, 255, 255, 0.9); /* Una mica menys opac */
-    backdrop-filter: blur(12px); /* Una mica més de blur */
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-bottom: var(--glass-border-light);
+    box-shadow: var(--glass-shadow);
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 1000;
-    box-shadow: var(--shadow);
     transition: var(--transition);
+    width: 100%; /* Asegurar ancho completo */
 }
 
 .nav-container {
-    max-width: 1200px;
+    max-width: none; /* Eliminar el max-width que limita el ancho */
+    width: 100%; /* Ocupar todo el ancho disponible */
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 40px; /* Reducir padding lateral para más espacio útil */
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Distribuir espacio entre elementos */
     align-items: center;
     height: 80px;
 }
@@ -105,37 +134,60 @@ body {
 .nav-logo .logo-link {
     text-decoration: none;
     font-weight: 700;
-    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    line-height: 1.2;
+    flex-shrink: 0; /* Evitar que el logo se encoja */
+}
+
+/* Logo Image - Properly sized */
+.logo-image {
+    height: 50px;
+    width: auto;
+    flex-shrink: 0;
+    border-radius: 6px;
+}
+
+/* Logo Text Wrapper - Stacked text */
+.logo-text-wrapper {
     display: flex;
     flex-direction: column;
-    line-height: 1.2;
+    line-height: 1.1;
 }
 
 .logo-text {
     color: var(--text-dark);
     font-size: 1rem;
-    font-weight: 500;
+    font-weight: 600;
+    display: block;
 }
 
 .logo-highlight {
     color: var(--primary-color);
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     font-weight: 700;
+    display: block;
 }
 
 .nav-menu {
     display: flex;
-    gap: 2.2rem; /* Una mica més d'espai */
+    gap: 3rem; /* Aumentar espacio entre enlaces de menú */
+    flex: 1; /* Permitir que el menú ocupe espacio disponible */
+    justify-content: center; /* Centrar el menú */
+    margin: 0 2rem; /* Añadir margen a los lados del menú */
 }
 
 .nav-link {
     text-decoration: none;
-    color: var(--gray-600); /* Més suau */
+    color: var(--gray-600);
     font-weight: 500;
     transition: var(--transition);
     position: relative;
     font-size: 0.95rem;
+    white-space: nowrap; /* Evitar que los enlaces se rompan en varias líneas */
 }
+
 .nav-link:hover {
     color: var(--primary-color);
 }
@@ -144,6 +196,7 @@ body {
     display: flex;
     align-items: center;
     gap: 1.5rem;
+    flex-shrink: 0; /* Evitar que los botones se encojan */
 }
 
 .search-container {
@@ -151,23 +204,24 @@ body {
 }
 
 #search-input {
-    /* --- UPGRADE: Formulari més net --- */
+    background: rgba(249, 250, 251, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.04);
     padding: 10px 40px 10px 18px;
-    border: 1px solid var(--border-color); /* Més subtil que 2px */
     border-radius: 25px;
     outline: none;
     transition: var(--transition);
     width: 200px;
     font-size: 0.9rem;
-    background: var(--gray-50);
 }
 
 #search-input:focus {
     border-color: var(--primary-color);
     width: 250px;
     background: var(--text-light);
-    /* Anell de focus professional */
-    box-shadow: 0 0 0 3px rgba(226, 0, 26, 0.1); 
+    box-shadow: 0 0 0 3px rgba(226, 0, 26, 0.1);
 }
 
 .search-icon {
@@ -180,19 +234,21 @@ body {
 }
 
 .search-results {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border-light);
+    box-shadow: var(--glass-shadow);
     position: absolute;
     top: 100%;
     left: 0;
     right: 0;
-    background: white;
     border-radius: var(--border-radius);
-    box-shadow: var(--shadow-lg);
     z-index: 1000;
     max-height: 300px;
     overflow-y: auto;
     display: none;
     margin-top: 10px;
-    border: 1px solid var(--border-color);
 }
 
 .search-result-item {
@@ -201,6 +257,7 @@ body {
     cursor: pointer;
     transition: var(--transition);
 }
+
 .search-result-item:last-child {
     border-bottom: none;
 }
@@ -213,6 +270,9 @@ body {
     display: none;
     flex-direction: column;
     cursor: pointer;
+    background: none;
+    border: none;
+    padding: 5px;
 }
 
 .nav-toggle span {
@@ -222,6 +282,7 @@ body {
     margin: 3px 0;
     transition: var(--transition);
     border-radius: 3px;
+    display: block;
 }
 
 /* Buttons */
@@ -252,19 +313,20 @@ body {
     box-shadow: var(--shadow-lg);
 }
 
-/* --- UPGRADE: Botó "Glassmorphism" per al Hero --- */
+/* --- LIQUID GLASS UPGRADE: Botó "Glassmorphism" millorat --- */
 .btn-secondary {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.15); /* Una mica més opac */
     color: var(--text-light);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.4); /* Vora més definida */
+    backdrop-filter: blur(10px); /* Més blur que abans */
+    -webkit-backdrop-filter: blur(10px);
 }
 
 .btn-secondary:hover {
-    background: var(--text-light);
-    color: var(--primary-color);
+    background: rgba(255, 255, 255, 0.3);
+    color: var(--text-light);
     transform: translateY(-2px);
-    border-color: var(--text-light);
+    border-color: rgba(255, 255, 255, 0.6);
 }
 
 .btn-outline {
@@ -422,14 +484,59 @@ body {
 }
 
 .stat-card {
+    /* --- LIQUID GLASS UPGRADE --- */
+    background: rgba(255, 255, 255, 0.6); /* Vidre sobre fons clar */
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border-light);
+    box-shadow: var(--glass-shadow);
+    position: relative; /* Per a l'efecte aurora */
+    overflow: hidden;   /* Per a l'efecte aurora */
+    /* --- --- */
+    
     text-align: center;
     padding: 2.5rem;
-    background: var(--text-light);
     border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
     transition: var(--transition);
-    border: 1px solid var(--border-color); /* Vora subtil */
 }
+
+/* --- LIQUID GLASS UPGRADE: Efecte Aurora a les targetes --- */
+.stat-card::before,
+.event-card::before,
+.news-card::before,
+.contact-form::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: var(--liquid-aurora);
+    z-index: 0; /* Per sota del contingut */
+    opacity: 0;
+    transition: opacity 0.6s var(--transition);
+    animation: liquidRotate 20s infinite linear;
+}
+
+.stat-card:hover::before,
+.event-card:hover::before,
+.news-card:hover::before,
+.contact-form:hover::before {
+    opacity: 1;
+}
+
+/* --- LIQUID GLASS UPGRADE: El contingut ha d'estar per sobre de l'aurora --- */
+.stat-icon,
+.stat-number,
+.stat-label,
+.event-content,
+.news-content,
+.contact-form > .form-group,
+.contact-form > .btn {
+    position: relative;
+    z-index: 1;
+}
+/* --- --- */
 
 .stat-icon {
     font-size: 2.5rem;
@@ -525,12 +632,18 @@ body {
 }
 
 .visual-card {
-    background: var(--secondary-color); /* S'utilitza el color secundari per variar */
+    /* --- LIQUID GLASS UPGRADE (Variant fosca) --- */
+    background: rgba(0, 68, 129, 0.4); /* --secondary-color amb transparència */
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border-light);
+    box-shadow: var(--glass-shadow);
+    /* --- --- */
+    
     color: var(--text-light);
     padding: 3rem;
     border-radius: var(--border-radius);
     text-align: center;
-    box-shadow: var(--shadow-lg);
 }
 
 .visual-card h4 {
@@ -556,13 +669,18 @@ body {
 }
 
 .event-card, .news-card {
-    /* --- UPGRADE: Targetes refinades --- */
-    background: var(--text-light);
+    /* --- LIQUID GLASS UPGRADE --- */
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border-light);
+    box-shadow: var(--glass-shadow);
+    position: relative; /* Per a l'efecte aurora */
+    /* --- --- */
+    
     border-radius: var(--border-radius);
     overflow: hidden;
-    box-shadow: var(--shadow);
     transition: var(--transition);
-    border: 1px solid var(--border-color);
 }
 
 .event-image, .news-image {
@@ -573,21 +691,7 @@ body {
     justify-content: center;
     color: var(--gray-400);
     overflow: hidden;
-    /* S'assumeix que hi haurà una <img> a dins. 
-       Això és per al cas que no n'hi hagi */
 }
-/* Si s'utilitza una <img> real:
-.event-image img, .news-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.4s ease;
-}
-.event-card:hover .event-image img,
-.news-card:hover .news-image img {
-    transform: scale(1.05);
-}
-*/
 
 .event-content, .news-content {
     padding: 1.75rem; /* Espaiat consistent */
@@ -724,11 +828,18 @@ body {
 }
 
 .contact-form {
-    background: var(--text-light);
+    /* --- LIQUID GLASS UPGRADE --- */
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border-light);
+    box-shadow: var(--glass-shadow);
+    position: relative; /* Per a l'efecte aurora */
+    overflow: hidden;   /* Per a l'efecte aurora */
+    /* --- --- */
+    
     padding: 2.5rem;
     border-radius: var(--border-radius);
-    border: 1px solid var(--border-color);
-    box-shadow: var(--shadow);
 }
 
 .form-group {
@@ -745,15 +856,20 @@ body {
 
 .form-group input,
 .form-group textarea {
-    /* --- UPGRADE: Formulari Premium --- */
+    /* --- LIQUID GLASS UPGRADE: Formulari de vidre --- */
+    background: rgba(249, 250, 251, 0.7); /* --gray-50 amb transparència */
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.04);
+    /* --- --- */
+    
     width: 100%;
     padding: 14px 18px; /* Més espai intern */
-    border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
     font-size: 1rem;
     transition: var(--transition);
     font-family: 'Inter Tight', sans-serif;
-    background: var(--gray-50);
 }
 
 .form-group input:focus,
@@ -770,6 +886,11 @@ body {
     background: var(--background-dark);
     color: var(--gray-300); /* Més clar que --text-light pur */
     padding: 60px 0 20px;
+}
+
+.footer-image {
+    height: 60px;
+    width: auto;
 }
 
 .footer-content {
@@ -890,13 +1011,48 @@ body {
 }
 
 .news-card-full, .event-card-full {
-    background: var(--text-light);
-    border-radius: var(--border-radius);
+    /* --- LIQUID GLASS UPGRADE (Aplicat també a les targetes de pàgina completa) --- */
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border-light);
+    box-shadow: var(--glass-shadow);
+    position: relative;
     overflow: hidden;
-    box-shadow: var(--shadow);
+    /* --- --- */
+    
+    border-radius: var(--border-radius);
     transition: var(--transition);
-    border: 1px solid var(--border-color);
 }
+
+/* --- LIQUID GLASS UPGRADE: Efecte Aurora (caldria afegir la classe .event-card-full::before, .news-card-full::before al selector d'aurora de dalt) --- */
+/* Per simplicitat, ho afegim aquí */
+.news-card-full::before,
+.event-card-full::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: var(--liquid-aurora);
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 0.6s var(--transition);
+    animation: liquidRotate 20s infinite linear;
+}
+
+.news-card-full:hover::before,
+.event-card-full:hover::before {
+    opacity: 1;
+}
+
+.news-content-full,
+.event-content-full {
+    position: relative;
+    z-index: 1; /* El contingut per sobre de l'aurora */
+}
+/* --- --- */
 
 .news-image-full, .event-image-full {
     height: 250px;
@@ -1036,11 +1192,15 @@ body {
 
 .countdown-item {
     text-align: center;
-    background: var(--text-light);
+    /* --- LIQUID GLASS UPGRADE --- */
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border-light);
+    box-shadow: var(--glass-shadow);
+    /* --- --- */
     padding: 1rem;
     border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border-color);
     min-width: 80px;
 }
 
@@ -1191,7 +1351,52 @@ body {
     transform: translateY(0);
 }
 
-/* Responsive Design (Majorment heretat, alguns retocs) */
+/* Email Ticker Styles */
+#emails {
+    position: relative;
+    height: 1.5em;
+    overflow: hidden;
+    margin-top: 5px;
+    width: 280px;
+}
+
+#emails strong {
+    display: block;
+    margin-bottom: 10px;
+}
+
+#emails p {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    margin: 0;
+    opacity: 0;
+    transform: translateY(-100%);
+    transition: transform 0.7s ease-in-out, opacity 0.7s ease-in-out;
+}
+
+#emails p.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#emails p.amagat {
+    opacity: 0;
+    transform: translateY(100%);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .nav-container {
+        padding: 0 30px; /* Un poco menos de padding en pantallas más pequeñas */
+    }
+    
+    .nav-menu {
+        gap: 2.5rem; /* Reducir espacio entre enlaces */
+    }
+}
+
 @media (max-width: 1024px) {
     .hero-title {
         font-size: clamp(2.5rem, 7vw, 3.5rem);
@@ -1212,25 +1417,49 @@ body {
     .events-grid-full {
         grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     }
+    
+    .nav-menu {
+        gap: 2rem; /* Menos espacio en tablets */
+    }
 }
 
 @media (max-width: 768px) {
+    .nav-container {
+        padding: 0 20px; /* Menos padding en móvil */
+    }
+    
+    /* Mobile Menu Styles */
     .nav-menu {
         display: none;
         position: absolute;
         top: 100%;
         left: 0;
         right: 0;
-        background: white;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: var(--glass-blur);
+        -webkit-backdrop-filter: var(--glass-blur);
+        border-top: var(--glass-border-light);
+        box-shadow: var(--glass-shadow);
         flex-direction: column;
-        padding: 2rem;
-        box-shadow: var(--shadow-lg);
+        padding: 1rem 0;
         text-align: center;
-        border-top: 1px solid var(--border-color);
+        z-index: 1000;
+        margin: 0; /* Reset margin en móvil */
+        gap: 0; /* Reset gap en móvil */
     }
     
     .nav-menu.active {
         display: flex;
+    }
+    
+    .nav-menu .nav-link {
+        padding: 1rem 2rem;
+        border-bottom: 1px solid var(--border-color);
+        display: block;
+    }
+    
+    .nav-menu .nav-link:last-child {
+        border-bottom: none;
     }
     
     .nav-toggle {
@@ -1238,7 +1467,36 @@ body {
     }
     
     .nav-actions {
-        display: none; /* S'amaga per simplicitat al mòbil, es podria moure al menú */
+        display: none;
+    }
+    
+    /* Hamburger animation */
+    .nav-toggle.active span:nth-child(1) {
+        transform: rotate(-45deg) translate(-5px, 6px);
+    }
+    
+    .nav-toggle.active span:nth-child(2) {
+        opacity: 0;
+    }
+    
+    .nav-toggle.active span:nth-child(3) {
+        transform: rotate(45deg) translate(-5px, -6px);
+    }
+    
+    .nav-logo .logo-link {
+        gap: 8px;
+    }
+    
+    .logo-image {
+        height: 40px; /* Smaller on mobile */
+    }
+    
+    .logo-text {
+        font-size: 0.9rem;
+    }
+    
+    .logo-highlight {
+        font-size: 1rem;
     }
     
     .hero {
@@ -1351,38 +1609,28 @@ body {
     .countdown-number {
         font-size: 1.5rem;
     }
+    
+    .nav-container {
+        padding: 0 15px; /* Mínimo padding en móviles pequeños */
+    }
+    
+    .nav-logo .logo-link {
+        gap: 6px;
+    }
+    
+    .logo-image {
+        height: 35px; /* Even smaller on very small screens */
+    }
+    
+    .logo-text {
+        font-size: 0.8rem;
+    }
+    
+    .logo-highlight {
+        font-size: 0.9rem;
+    }
 }
 
-#emails {
-            position: relative;
-            height: 1.5em;
-            overflow: hidden;
-            margin-top: 5px;
-            width: 280px;
-        }
-
-        #emails strong {
-            display: block;
-            margin-bottom: 10px;
-        }
-
-        #emails p {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            margin: 0;
-            opacity: 0;
-            transform: translateY(-100%);
-            transition: transform 0.7s ease-in-out, opacity 0.7s ease-in-out;
-        }
-
-        #emails p.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        #emails p.amagat {
-            opacity: 0;
-            transform: translateY(100%);
-        }
+.faq-title {
+    text-align: center;
+}

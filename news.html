@@ -15,41 +15,8 @@
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <a href="index.html" class="logo-link">
-                    <span class="logo-text">Cooperativa</span>
-                    <!-- UPGRADE: Corregit per coherència amb index.html -->
-                    <span class="logo-highlight">Marató TV3</span>
-                </a>
-            </div>
-            
-            <div class="nav-menu">
-                <a href="index.html" class="nav-link hover-underline">Inici</a>
-                <a href="index.html#sobre-nosaltres" class="nav-link hover-underline">Sobre Nosaltres</a>
-                <a href="events.html" class="nav-link hover-underline">Esdeveniments</a>
-                <a href="news.html" class="nav-link hover-underline">Notícies</a>
-                <a href="index.html#contacte" class="nav-link hover-underline">Contacte</a>
-            </div>
-
-            <div class="nav-actions">
-                <div class="search-container">
-                    <input type="text" id="search-input" placeholder="Cerca...">
-                    <div class="search-icon"><i class="fas fa-search"></i></div>
-                    <div id="search-results" class="search-results"></div>
-                </div>
-                <!-- UPGRADE: Corregit per coherència amb index.html -->
-                <a href="index.html#contacte" class="btn btn-primary nav-donate hover-pulse">Col·labora</a>
-            </div>
-
-            <div class="nav-toggle">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-    </nav>
+    <div id="navbar-container"></div>
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
 
     <!-- Page Hero -->
     <section class="page-hero">
@@ -172,54 +139,8 @@
     </section>
 
     <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <div class="footer-logo">
-                        <span class="logo-text">Cooperativa</span>
-                        <span class="logo-highlight">Marató TV3</span>
-                    </div>
-                    <p>Una iniciativa solidaria per donar suport a la recerca mèdica a través de la Marató de TV3.</p>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Enllaços ràpids</h4>
-                    <ul class="footer-links">
-                        <li><a href="index.html" class="hover-underline">Inici</a></li>
-                        <li><a href="index.html#sobre-nosaltres" class="hover-underline">Sobre Nosaltres</a></li>
-                        <li><a href="events.html" class="hover-underline">Esdeveniments</a></li>
-                        <li><a href="news.html" class="hover-underline">Notícies</a></li>
-                        <li><a href="index.html#contacte" class="hover-underline">Contacte</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Col·labora</h4>
-                    <ul class="footer-links">
-                        <li><a href="index.html#contacte" class="hover-underline">Fes-te voluntari</a></li>
-                        <li><a href="index.html#contacte" class="hover-underline">Organitza un esdeveniment</a></li>
-                        <li><a href="index.html#contacte" class="hover-underline">Empreses col·laboradores</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Legal</h4>
-                    <ul class="footer-links">
-                        <li><a href="#" class="hover-underline">Política de privacitat</a></li>
-                        <li><a href="#" class="hover-underline">Avís legal</a></li>
-                        <li><a href="#" class="hover-underline">Cookies</a></li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; 2024 Cooperativa Marató TV3. Tots els drets reservats.</p>
-                <p>Projecte solidari sense ànim de lucre.</p>
-            </div>
-        </div>
-    </footer>
-
+   <div id="footer-container-1"></div>
+    <script src="footer.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

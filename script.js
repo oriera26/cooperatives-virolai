@@ -1,53 +1,96 @@
 // Cooperativa Marató TV3 - Script Principal
 document.addEventListener('DOMContentLoaded', function() {
-    // Inicialitzar totes les funcionalitats
-    initNavbar();
-    initSearch();
-    initCounters();
-    initScrollAnimations();
-    initForms();
-    initEventListeners();
-    
-    // Inicialitzar funcionalitats específiques de pàgines
-    if (document.querySelector('.countdown')) {
-        initCountdown();
-    }
-    
-    if (document.querySelector('.news-filters') || document.querySelector('.events-filters')) {
-        initFilters();
-    }
-
-    // Inicialització de càrrega de dades per a comptadors (euros, voluntaris, etc.)
-    initData(); 
-    iniciarTicker();
-});
-
-function iniciarTicker() {
-            const div = document.querySelector('#emails');
-            const paragrafs = div.querySelectorAll('p');
-            let indexActual = 0;
-
-            // Amaga tots els paràgrafs inicialment afegint una classe
-            paragrafs.forEach(p => p.classList.add('amagat'));
-
-            // Mostra el primer element
-            paragrafs[indexActual].classList.remove('amagat');
-            paragrafs[indexActual].classList.add('visible');
-
-            setInterval(() => {
-                // Amaga el paràgraf actual
-                paragrafs[indexActual].classList.add('amagat');
-                paragrafs[indexActual].classList.remove('visible');
-
-                // Avança a el següent paràgraf
-                indexActual = (indexActual + 1) % paragrafs.length;
-
-                // Mostra el nou paràgraf actual
-                paragrafs[indexActual].classList.remove('amagat');
-                paragrafs[indexActual].classList.add('visible');
-            }, 3000);
+    // Carregar la navbar primer
+    loadNavbar().then(() => {
+        // Un cop la navbar està carregada, inicialitzar totes les funcionalitats
+        initNavbar();
+        initSearch();
+        initCounters();
+        initScrollAnimations();
+        initForms();
+        initEventListeners();
+        
+        // Inicialitzar funcionalitats específiques de pàgines
+        if (document.querySelector('.countdown')) {
+            initCountdown();
+        }
+        
+        if (document.querySelector('.news-filters') || document.querySelector('.events-filters')) {
+            initFilters();
         }
 
+        // Inicialització de càrrega de dades per a comptadors (euros, voluntaris, etc.)
+        initData(); 
+        iniciarTicker();
+    });
+});
+
+// Funció per carregar la navbar
+function loadNavbar() {
+    return fetch('navbar.html')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('No s\'ha pogut carregar la navbar');
+            }
+            return response.text();
+        })
+        .then(data => {
+            document.getElementById('navbar-container').innerHTML = data;
+        })
+        .catch(error => {
+            console.error('Error carregant la navbar:', error);
+            // Fallback: Crear una navbar bàsica si no es pot carregar
+            document.getElementById('navbar-container').innerHTML = `
+                <nav class="navbar">
+                    <div class="nav-container">
+                        <div class="nav-logo">
+                            <a href="index.html" class="logo-link">
+                                <span class="logo-text">Cooperativa Virolai</span>
+                                <span class="logo-highlight">Onada Solidària</span>
+                            </a>
+                        </div>
+                        <div class="nav-toggle">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                </nav>
+            `;
+        });
+}
+
+function iniciarTicker() {
+    const div = document.querySelector('#emails');
+    if (!div) return;
+    
+    const paragrafs = div.querySelectorAll('p');
+    let indexActual = 0;
+
+    // Amaga tots els paràgrafs inicialment afegint una classe
+    paragrafs.forEach(p => p.classList.add('amagat'));
+
+    // Mostra el primer element
+    if (paragrafs.length > 0) {
+        paragrafs[indexActual].classList.remove('amagat');
+        paragrafs[indexActual].classList.add('visible');
+    }
+
+    setInterval(() => {
+        if (paragrafs.length === 0) return;
+        
+        // Amaga el paràgraf actual
+        paragrafs[indexActual].classList.add('amagat');
+        paragrafs[indexActual].classList.remove('visible');
+
+        // Avança a el següent paràgraf
+        indexActual = (indexActual + 1) % paragrafs.length;
+
+        // Mostra el nou paràgraf actual
+        paragrafs[indexActual].classList.remove('amagat');
+        paragrafs[indexActual].classList.add('visible');
+    }, 3000);
+}
 
 // Navbar i menú mòbil
 function initNavbar() {
@@ -58,22 +101,37 @@ function initNavbar() {
         navToggle.addEventListener('click', function() {
             navMenu.classList.toggle('active');
             navToggle.classList.toggle('active');
+            
+            // Tancar el menú en fer clic en un enllaç (mòbil)
+            if (navMenu.classList.contains('active')) {
+                const navLinks = document.querySelectorAll('.nav-link');
+                navLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        navMenu.classList.remove('active');
+                        navToggle.classList.remove('active');
+                    });
+                });
+            }
         });
     }
     
-    // Tancar menú en fer clic en un enllaç
-    const navLinks = document.querySelectorAll('.nav-link');
-    navLinks.forEach(link => {
-        link.addEventListener('click', function() {
-            navMenu.classList.remove('active');
-            navToggle.classList.remove('active');
-        });
+    // Tancar menú en fer clic fora (mòbil)
+    document.addEventListener('click', function(e) {
+        const navToggle = document.querySelector('.nav-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        if (navToggle && navMenu && navMenu.classList.contains('active')) {
+            if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
+                navMenu.classList.remove('active');
+                navToggle.classList.remove('active');
+            }
+        }
     });
     
     // Canviar navbar en scroll
     window.addEventListener('scroll', function() {
         const navbar = document.querySelector('.navbar');
-        if (navbar) { // Afegit check per evitar errors si no hi ha navbar
+        if (navbar) {
             if (window.scrollY > 100) {
                 navbar.style.background = 'rgba(255, 255, 255, 0.98)';
                 navbar.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
@@ -251,7 +309,6 @@ function calcularDiesRestants(dataLimit) {
     // Si la data ja ha passat, retornem 0
     return diesRestants > 0 ? diesRestants : 0;
 }
-
 
 // Animacions de scroll
 function initScrollAnimations() {
@@ -496,3 +553,18 @@ function initEventListeners() {
         yearElement.textContent = `© ${currentYear} Cooperativa Marató TV3. Tots els drets reservats.`;
     }
 }
+
+// footer.js
+document.addEventListener("DOMContentLoaded", () => {
+    fetch("footer.html")
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("No s'ha pogut carregar el footer.");
+            }
+            return response.text();
+        })
+        .then(data => {
+            document.getElementById("footer-container-1").innerHTML = data;
+        })
+        .catch(error => console.error("Error carregant el footer:", error));
+});
