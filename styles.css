@@ -15,9 +15,127 @@
 */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&display=swap');
-/* --- UPGRADE --- */
-/* S'ha eliminat Questrial i Montserrat per unificar la tipografia amb Inter Tight, 
-   que és una font variable potent i moderna, donant un aspecte més net. */
+
+/* ======================================= */
+/* 2. ESTILS ESPECÍFICS PER AL MOTOR DE CERCA */
+/* ======================================= */
+
+/* Contenidor de resultats - Posicionament i Glassmorphism */
+/* Contenidor de resultats - Posicionament i Glassmorphism Refinat */
+#search-results {
+    position: absolute;
+    top: calc(100% + 10px); 
+    right: 0;
+    z-index: 2000;
+    width: 400px;
+    max-height: 450px;
+    overflow-y: auto;
+    background-color: whitesmoke;
+    border-radius: 30px;
+    padding: 10px 0;
+    display: none;
+    transform-origin: top right;
+    animation: fade-in-scale 0.2s var(--ease-out-quad);
+}
+
+.search-result-item {
+    display: block;
+    cursor: pointer;
+    padding: 10px 15px;
+    border-bottom: 1px solid var(--color-border-subtle);
+    text-decoration: none;
+    color: var(--color-text-primary);
+    transition: background-color 0.2s ease;
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+.search-result-item:hover {
+    background-color: var(--color-primary-05); 
+}
+
+.search-result-main {
+    margin-bottom: 5px;
+}
+
+.search-result-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.search-result-content {
+    font-size: 0.8rem;
+    color: var(--color-text-secondary);
+    margin-top: 3px;
+    line-height: 1.3;
+}
+
+/* Peu de resultat (badges i font) */
+.search-result-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 5px;
+}
+
+.search-result-source {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-text-tertiary);
+}
+
+/* Estils per als Tags (Badges) */
+.search-result-badge {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+/* Colors de badge (personalitzables) */
+.search-result-heading { background-color: #ffeb3b40; color: #9c27b0; } /* Morat subtil */
+.search-result-paragraph { background-color: #e0f7fa; color: #00bcd4; }
+.search-result-card-content { background-color: #ffcdd2; color: #f44336; }
+.search-result-title { background-color: #c8e6c9; color: #4caf50; }
+.search-result-content { background-color: #e3f2fd; color: #2196f3; }
+.search-no-results {
+    padding: 10px 15px;
+    color: var(--color-text-secondary);
+    font-style: italic;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+
+/* Estil per al text subratllat al resultat (displaySearchResults) */
+.search-result-item mark,
+/* Estil per al text subratllat a la pàgina (highlightTextInElement) */
+.search-text-highlight {
+    background-color: #ffff00 !important; /* Groc brillant */
+    color: inherit;
+    padding: 0 1px;
+    border-radius: 2px;
+}
+
+/* Estils de l'element quan es fa scroll (highlightElement) */
+@keyframes highlight-fade {
+    from {
+        box-shadow: 0 0 0 5px rgba(255, 255, 0, 0.5), 0 0 0 10px rgba(255, 255, 0, 0.2);
+    }
+    to {
+        box-shadow: none;
+    }
+}
+
+/* Opcional: Afegir un efecte visual per a l'scroll */
+.search-element-highlight {
+    animation: highlight-fade 3s ease-out;
+}
 
 :root {
     /* --- UPGRADE: Paleta de colors ampliada --- */
@@ -40,9 +158,9 @@
     --gray-800: #1f2937;
     --gray-900: #202229ec;
     
-    --text-dark: var(--gray-800); /* Més suau que #333 */
-    --background-light: var(--gray-50); /* Més net que #f8f9fa */
-    --background-dark: var(--gray-900); /* Un fosc més modern */
+    --text-dark: var(--gray-800);
+    --background-light: var(--gray-50);
+    --background-dark: var(--gray-900);
     --gray-light: var(--gray-200);
     --gray-medium: var(--gray-500);
     --border-color: var(--gray-200);
@@ -53,10 +171,10 @@
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.08);
 
     /* --- UPGRADE: Valors de disseny més suaus --- */
-    --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); /* Easing professional */
+    --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     
     /* --- LIQUID GLASS UPGRADE --- */
-    --border-radius: 16px; /* Més suau que 12px per a l'efecte líquid */
+    --border-radius: 16px;
     --glass-blur: blur(20px);
     --glass-border-light: 1px solid rgba(255, 255, 255, 0.2);
     --glass-border-dark: 1px solid rgba(0, 0, 0, 0.05);
@@ -65,9 +183,9 @@
     /* Gradient Aurora per a l'efecte líquid */
     --liquid-aurora: radial-gradient(
         circle at 100% 0%, 
-        rgba(0, 225, 255, 0.15) 0%,  /* Accent */
-        rgba(226, 0, 26, 0.1) 35%,   /* Primary */
-        rgba(0, 68, 129, 0.1) 60%,   /* Secondary */
+        rgba(218, 235, 237, 0.127) 0%,
+        rgba(231, 219, 220, 0.1) 35%,
+        rgba(244, 246, 249, 0.1) 60%,
         transparent 80%
     );
 }
@@ -89,10 +207,9 @@ html {
 }
 
 body {
-    /* --- UPGRADE: Tipografia base millorada --- */
     font-family: 'Inter Tight', sans-serif;
     line-height: 1.6;
-    color: var(--gray-700); /* Més suau que text-dark per al cos */
+    color: var(--gray-700);
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -104,475 +221,214 @@ body {
     padding: 0 20px;
 }
 
-/* Navbar - Full Width con más espacio entre elementos */
+/* ============================================ */
+/* NAVBAR RESPONSIVE CORREGIDA */
+/* ============================================ */
+
 .navbar {
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    border-bottom: var(--glass-border-light);
-    box-shadow: var(--glass-shadow);
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    backdrop-filter: blur(4.25px) saturate(123%);
+    -webkit-backdrop-filter: blur(1px) saturate(123%);
+    background-color: rgba(0, 0, 0, 0.16);
+    border-radius: 12px;
+    border: 1px solid rgba(209, 213, 219, 0.3);;
+    box-shadow: var(--glass-shadow);
+    border-radius: 50px;
+    height: 50px;
+    padding: 0 25px;
+    width: 95%;
+    max-width: 1200px;
     z-index: 1000;
     transition: var(--transition);
-    width: 100%; /* Asegurar ancho completo */
 }
 
 .nav-container {
-    max-width: none; /* Eliminar el max-width que limita el ancho */
-    width: 100%; /* Ocupar todo el ancho disponible */
-    margin: 0 auto;
-    padding: 0 40px; /* Reducir padding lateral para más espacio útil */
     display: flex;
-    justify-content: space-between; /* Distribuir espacio entre elementos */
+    justify-content: space-between;
     align-items: center;
-    height: 80px;
+    width: 100%;
+    height: 100%;
+    gap: 20px;
 }
 
-.nav-logo .logo-link {
-    text-decoration: none;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    line-height: 1.2;
-    flex-shrink: 0; /* Evitar que el logo se encoja */
+.nav-logo {
+    flex: 0 0 auto;
 }
 
-/* Logo Image - Properly sized */
 .logo-image {
-    height: 50px;
+    margin-top: 5px;
+    height: 35px;
     width: auto;
-    flex-shrink: 0;
-    border-radius: 6px;
-}
-
-/* Logo Text Wrapper - Stacked text */
-.logo-text-wrapper {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.1;
-}
-
-.logo-text {
-    color: var(--text-dark);
-    font-size: 1rem;
-    font-weight: 600;
-    display: block;
-}
-
-.logo-highlight {
-    color: var(--primary-color);
-    font-size: 1.1rem;
-    font-weight: 700;
-    display: block;
 }
 
 .nav-menu {
     display: flex;
-    gap: 3rem; /* Aumentar espacio entre enlaces de menú */
-    flex: 1; /* Permitir que el menú ocupe espacio disponible */
-    justify-content: center; /* Centrar el menú */
-    margin: 0 2rem; /* Añadir margen a los lados del menú */
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 25px;
+    flex: 1;
 }
 
 .nav-link {
+    color: var(--text-light);
     text-decoration: none;
-    color: var(--gray-600);
-    font-weight: 500;
-    transition: var(--transition);
+    transition: color 0.3s;
+    font-size: 0.85rem;
+    white-space: nowrap;
     position: relative;
-    font-size: 0.95rem;
-    white-space: nowrap; /* Evitar que los enlaces se rompan en varias líneas */
+    padding: 2px 0;
 }
 
 .nav-link:hover {
     color: var(--primary-color);
 }
 
+/* Subratllat animat */
+.nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--primary-color);
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+    width: 100%;
+}
+
 .nav-actions {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
-    flex-shrink: 0; /* Evitar que los botones se encojan */
-}
-/* Estils per al sistema de cerca ultra-intel·ligent */
-.intelligent-result {
-    padding: 20px;
-    border-bottom: 1px solid #e8f4fd;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    background: white;
-    border-left: 4px solid transparent;
-    position: relative;
-    overflow: hidden;
-}
-
-.intelligent-result::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(226, 0, 26, 0.05), transparent);
-    transition: left 0.6s ease;
-}
-
-.intelligent-result:hover::before {
-    left: 100%;
-}
-
-.intelligent-result:hover {
-    background: linear-gradient(135deg, #f8f9ff 0%, #f0f7ff 100%);
-    border-left-color: #e2001a;
-    transform: translateX(4px);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-}
-
-.result-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 12px;
     gap: 15px;
+    flex: 0 0 auto;
 }
 
-.result-title {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #1a237e;
-    line-height: 1.3;
-    flex: 1;
-    margin: 0;
+/* Botó Hamburguesa */
+.nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 25px;
+    height: 20px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    padding: 0;
+    z-index: 1001;
 }
 
-.result-category {
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    white-space: nowrap;
-    flex-shrink: 0;
+.nav-toggle span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: var(--text-light);
+    border-radius: 10px;
+    transition: all 0.3s linear;
+    transform-origin: 1px;
 }
 
-.result-category.contact {
-    background: linear-gradient(135deg, #e2001a, #ff6b6b);
-    color: white;
-}
-
-.result-category.event {
-    background: linear-gradient(135deg, #004481, #2196f3);
-    color: white;
-}
-
-.result-category.news {
-    background: linear-gradient(135deg, #4CAF50, #66bb6a);
-    color: white;
-}
-
-.result-category.statistic {
-    background: linear-gradient(135deg, #ff9800, #ffb74d);
-    color: white;
-}
-
-.result-category.location {
-    background: linear-gradient(135deg, #9C27B0, #ba68c8);
-    color: white;
-}
-
-.result-category.schedule {
-    background: linear-gradient(135deg, #00bcd4, #4dd0e1);
-    color: white;
-}
-
-.result-category.content {
-    background: linear-gradient(135deg, #607d8b, #90a4ae);
-    color: white;
-}
-
-.result-content {
-    font-size: 0.95rem;
-    color: #455a64;
-    line-height: 1.5;
-    margin-bottom: 15px;
-}
-
-.result-content.structured {
-    white-space: pre-line;
-    background: linear-gradient(135deg, #f8f9fa, #e3f2fd);
-    padding: 15px;
-    border-radius: 12px;
-    border-left: 4px solid #004481;
-    font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
-    font-size: 0.9rem;
-    line-height: 1.6;
-}
-
-.result-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+/* Botó 'Col·labora' */
+.nav-donate {
+    background: #007AFF;
+    color: var(--text-light);
+    text-decoration: none;
+    border-radius: 200px;
+    height: 30px;
+    padding: 0px 15px 0px 15px;
     font-size: 0.8rem;
+    line-height: 1;
+    transition: var(--transition);
+    white-space: nowrap;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
 }
 
-.result-meta {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex: 1;
+.nav-donate:hover {
+    background: #0056b3;
+    transform: translateY(-1px);
+    box-shadow: var(--shadow);
 }
 
-.result-source {
-    color: #e2001a;
-    font-weight: 600;
-    background: rgba(226, 0, 26, 0.1);
-    padding: 4px 8px;
-    border-radius: 6px;
-}
-
-.result-tags {
-    color: #546e7a;
-    background: rgba(84, 110, 122, 0.1);
-    padding: 4px 8px;
-    border-radius: 6px;
-    font-size: 0.75rem;
-}
-
-.result-importance {
-    color: #ff9800;
-    font-size: 0.9rem;
-}
-
-/* Estils per a sense resultats */
-.search-no-results {
-    padding: 40px 20px;
-    text-align: center;
-    background: linear-gradient(135deg, #f5f7fa, #e3f2fd);
-    border-radius: 12px;
-}
-
-.no-results-icon {
-    font-size: 3rem;
-    margin-bottom: 15px;
-    opacity: 0.7;
-}
-
-.no-results-text {
-    font-size: 1.1rem;
-    color: #455a64;
-    margin-bottom: 10px;
-}
-
-.no-results-suggestion {
-    font-size: 0.9rem;
-    color: #78909c;
-    font-style: italic;
-}
-
-/* Millores als mark */
-mark {
-    background: linear-gradient(135deg, #ffeb3b, #ffd54f);
-    padding: 2px 4px;
-    border-radius: 4px;
-    font-weight: 700;
-    box-shadow: 0 2px 4px rgba(255, 193, 7, 0.3);
-}
-
-.search-text-highlight {
-    background: linear-gradient(135deg, #ff9800, #ff5722);
-    color: white;
-    padding: 2px 6px;
-    border-radius: 4px;
-    animation: pulseGlow 2s infinite;
-}
-
-@keyframes pulseGlow {
-    0%, 100% { 
-        box-shadow: 0 0 5px rgba(255, 152, 0, 0.5);
-    }
-    50% { 
-        box-shadow: 0 0 15px rgba(255, 152, 0, 0.8);
-    }
-}
-
-/* Scrollbar premium */
-.search-results::-webkit-scrollbar {
-    width: 8px;
-}
-
-.search-results::-webkit-scrollbar-track {
-    background: linear-gradient(180deg, #f1f8ff, #e8f4fd);
-    border-radius: 4px;
-}
-
-.search-results::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #e2001a, #ff6b6b);
-    border-radius: 4px;
-}
-
-.search-results::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, #c10015, #e2001a);
-}
-
-/* Responsive ultra-optimitzat */
-@media (max-width: 768px) {
-    .intelligent-result {
-        padding: 16px;
-    }
-    
-    .result-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-    }
-    
-    .result-category {
-        align-self: flex-start;
-    }
-    
-    .result-footer {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-    }
-    
-    .result-meta {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 6px;
-    }
-    
-    .result-content.structured {
-        padding: 12px;
-        font-size: 0.85rem;
-    }
-}
-
-/* Animacions d'entrada */
-@keyframes intelligentSlideIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px) scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-.search-result-item {
-    animation: intelligentSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) both;
-}
-
-.search-result-item:nth-child(1) { animation-delay: 0.05s; }
-.search-result-item:nth-child(2) { animation-delay: 0.1s; }
-.search-result-item:nth-child(3) { animation-delay: 0.15s; }
-.search-result-item:nth-child(4) { animation-delay: 0.2s; }
-.search-result-item:nth-child(5) { animation-delay: 0.25s; }
-.search-result-item:nth-child(6) { animation-delay: 0.3s; }
-.search-result-item:nth-child(7) { animation-delay: 0.35s; }
-.search-result-item:nth-child(8) { animation-delay: 0.4s; }
-
+/* Cerca */
 .search-container {
     position: relative;
+    display: flex;
+    align-items: center;
 }
 
 #search-input {
-    background: rgba(249, 250, 251, 0.5);
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.04);
-    padding: 10px 40px 10px 18px;
-    border-radius: 25px;
-    outline: none;
-    transition: var(--transition);
-    width: 200px;
-    font-size: 0.9rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 15px;
+    padding: 6px 30px 6px 12px;
+    color: white;
+    font-size: 0.8rem;
+    width: 150px;
+    transition: all 0.3s;
+    height: 28px;
 }
 
 #search-input:focus {
-    border-color: var(--primary-color);
-    width: 250px;
-    background: var(--text-light);
-    box-shadow: 0 0 0 3px rgba(226, 0, 26, 0.1);
+    outline: none;
+    background: rgba(255, 255, 255, 0.2);
+    width: 180px;
+}
+
+#search-input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
 }
 
 .search-icon {
     position: absolute;
-    right: 15px;
+    right: 10px;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--gray-400);
-    cursor: pointer;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.8rem;
+    pointer-events: none;
 }
 
-.search-results {
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    border: var(--glass-border-light);
-    box-shadow: var(--glass-shadow);
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    border-radius: var(--border-radius);
-    z-index: 1000;
-    max-height: 300px;
-    overflow-y: auto;
-    display: none;
-    margin-top: 10px;
+/* ============================================ */
+/* LAYOUT GENERAL & BASE TYPOGRAPHY */
+/* ============================================ */
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter Tight', sans-serif;
+    color: var(--text-dark);
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
 }
 
-.search-result-item {
-    padding: 12px 15px;
-    border-bottom: 1px solid var(--border-color);
-    cursor: pointer;
-    transition: var(--transition);
-}
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.5rem; }
 
-.search-result-item:last-child {
-    border-bottom: none;
-}
-
-.search-result-item:hover {
-    background: var(--background-light);
-}
-
-.nav-toggle {
-    display: none;
-    flex-direction: column;
-    cursor: pointer;
-    background: none;
-    border: none;
-    padding: 5px;
-}
-
-.nav-toggle span {
-    width: 25px;
-    height: 3px;
-    background: var(--text-dark);
-    margin: 3px 0;
-    transition: var(--transition);
-    border-radius: 3px;
-    display: block;
+section {
+    padding: 100px 0;
 }
 
 /* Buttons */
 .btn {
-    /* --- UPGRADE: Botons moderns --- */
     display: inline-block;
-    padding: 12px 30px;
-    border-radius: var(--border-radius); /* Radi consistent */
+    border-radius: var(--border-radius);
     text-decoration: none;
     font-weight: 600;
-    text-transform: none; /* Més net que majúscules */
+    text-transform: none;
     letter-spacing: 0;
     transition: var(--transition);
     border: none;
@@ -584,21 +440,22 @@ mark {
 .btn-primary {
     background: var(--primary-color);
     color: var(--text-light);
+    padding: 0px 10px 0px 10px
 }
 
 .btn-primary:hover {
     background: var(--primary-dark);
-    transform: translateY(-2px); /* Més subtil */
+    transform: translateY(-2px);
     box-shadow: var(--shadow-lg);
 }
 
-/* --- LIQUID GLASS UPGRADE: Botó "Glassmorphism" millorat --- */
 .btn-secondary {
-    background: rgba(255, 255, 255, 0.15); /* Una mica més opac */
+    background: rgba(255, 255, 255, 0.15);
     color: var(--text-light);
-    border: 1px solid rgba(255, 255, 255, 0.4); /* Vora més definida */
-    backdrop-filter: blur(10px); /* Més blur que abans */
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
+    padding: 2px 15px 2px 15px
 }
 
 .btn-secondary:hover {
@@ -611,7 +468,8 @@ mark {
 .btn-outline {
     background: transparent;
     color: var(--primary-color);
-    border: 1px solid var(--primary-color); /* 1px és més net */
+    border: 1px solid var(--primary-color);
+    padding: 2px 15px 2px 15px;
 }
 
 .btn-outline:hover {
@@ -625,11 +483,10 @@ mark {
     font-size: 1rem;
 }
 
-/* --- HERO SECTION NETEJADA I ACTUALITZADA --- */
-/* S'han combinat les dues definicions de .hero del teu codi */
+/* Hero Section */
 .hero {
     position: relative;
-    height: 100vh; /* 100vh és més immersiu */
+    height: 100vh;
     min-height: 600px;
     display: flex;
     align-items: center;
@@ -637,7 +494,7 @@ mark {
     text-align: center;
     color: var(--text-light);
     overflow: hidden;
-    margin-top: 80px; /* Compensa la navbar fixa */
+    margin-top: 0;
 }
 
 .hero-video {
@@ -653,7 +510,6 @@ mark {
     z-index: -2;
 }
 
-/* --- UPGRADE: Overlay en degradat, més professional --- */
 .hero-overlay {
     position: absolute;
     top: 0;
@@ -668,26 +524,26 @@ mark {
     z-index: 1;
     max-width: 800px;
     padding: 0 20px;
-    animation: fadeInUp 1s ease-out 0.2s; /* S'afegeix un petit retard */
+    animation: fadeInUp 1s ease-out 0.2s;
     animation-fill-mode: backwards;
 }
 
 .hero-title {
-    /* --- UPGRADE: Tipografia de Hero més potent --- */
-    font-size: clamp(2.5rem, 6vw, 4.5rem); /* Títol fluid */
-    font-weight: 800; /* Més pes per a l'impacte */
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 800;
+    color: white;
     margin-bottom: 1.5rem;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-    letter-spacing: -0.03em; /* Més ajustat */
+    letter-spacing: -0.03em;
     line-height: 1.1;
     font-family: 'Inter Tight', sans-serif;
 }
 
 .hero-subtitle {
-    font-size: clamp(1.1rem, 2.5vw, 1.3rem); /* Subtítol fluid */
+    font-size: clamp(1.1rem, 2.5vw, 1.3rem);
     margin-bottom: 2.5rem;
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
-    color: var(--gray-200); /* Color de paleta */
+    color: var(--gray-200);
     opacity: 1;
     line-height: 1.6;
     max-width: 600px;
@@ -763,23 +619,19 @@ mark {
 }
 
 .stat-card {
-    /* --- LIQUID GLASS UPGRADE --- */
-    background: rgba(255, 255, 255, 0.6); /* Vidre sobre fons clar */
+    background: rgba(255, 255, 255, 0.6);
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
     border: var(--glass-border-light);
     box-shadow: var(--glass-shadow);
-    position: relative; /* Per a l'efecte aurora */
-    overflow: hidden;   /* Per a l'efecte aurora */
-    /* --- --- */
-    
+    position: relative;
+    overflow: hidden;
     text-align: center;
     padding: 2.5rem;
     border-radius: var(--border-radius);
     transition: var(--transition);
 }
 
-/* --- LIQUID GLASS UPGRADE: Efecte Aurora a les targetes --- */
 .stat-card::before,
 .event-card::before,
 .news-card::before,
@@ -791,7 +643,7 @@ mark {
     width: 200%;
     height: 200%;
     background: var(--liquid-aurora);
-    z-index: 0; /* Per sota del contingut */
+    z-index: 0;
     opacity: 0;
     transition: opacity 0.6s var(--transition);
     animation: liquidRotate 20s infinite linear;
@@ -804,7 +656,6 @@ mark {
     opacity: 1;
 }
 
-/* --- LIQUID GLASS UPGRADE: El contingut ha d'estar per sobre de l'aurora --- */
 .stat-icon,
 .stat-number,
 .stat-label,
@@ -815,7 +666,6 @@ mark {
     position: relative;
     z-index: 1;
 }
-/* --- --- */
 
 .stat-icon {
     font-size: 2.5rem;
@@ -844,7 +694,6 @@ mark {
 }
 
 .section-header h2 {
-    /* --- UPGRADE: Tipografia de secció --- */
     font-size: 2.75rem;
     margin-bottom: 1rem;
     color: var(--text-dark);
@@ -854,7 +703,7 @@ mark {
 }
 
 .section-header p {
-    font-size: 1.15rem; /* Una mica més gran */
+    font-size: 1.15rem;
     color: var(--gray-600);
     max-width: 650px;
     margin: 0 auto;
@@ -911,14 +760,11 @@ mark {
 }
 
 .visual-card {
-    /* --- LIQUID GLASS UPGRADE (Variant fosca) --- */
-    background: rgba(0, 68, 129, 0.4); /* --secondary-color amb transparència */
+    background: rgba(0, 68, 129, 0.4);
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
     border: var(--glass-border-light);
     box-shadow: var(--glass-shadow);
-    /* --- --- */
-    
     color: var(--text-light);
     padding: 3rem;
     border-radius: var(--border-radius);
@@ -948,15 +794,12 @@ mark {
 }
 
 .event-card, .news-card {
-    /* --- LIQUID GLASS UPGRADE --- */
     background: rgba(255, 255, 255, 0.6);
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
     border: var(--glass-border-light);
     box-shadow: var(--glass-shadow);
-    position: relative; /* Per a l'efecte aurora */
-    /* --- --- */
-    
+    position: relative;
     border-radius: var(--border-radius);
     overflow: hidden;
     transition: var(--transition);
@@ -964,7 +807,7 @@ mark {
 
 .event-image, .news-image {
     height: 220px;
-    background: var(--gray-100); /* Placeholder més clar */
+    background: var(--gray-100);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -973,7 +816,7 @@ mark {
 }
 
 .event-content, .news-content {
-    padding: 1.75rem; /* Espaiat consistent */
+    padding: 1.75rem;
 }
 
 .event-date, .news-date {
@@ -1036,7 +879,7 @@ mark {
 }
 
 .read-more:hover {
-    gap: 0.75rem; /* Més subtil */
+    gap: 0.75rem;
 }
 
 /* Contact Section */
@@ -1107,16 +950,13 @@ mark {
 }
 
 .contact-form {
-    /* --- LIQUID GLASS UPGRADE --- */
     background: rgba(255, 255, 255, 0.6);
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
     border: var(--glass-border-light);
     box-shadow: var(--glass-shadow);
-    position: relative; /* Per a l'efecte aurora */
-    overflow: hidden;   /* Per a l'efecte aurora */
-    /* --- --- */
-    
+    position: relative;
+    overflow: hidden;
     padding: 2.5rem;
     border-radius: var(--border-radius);
 }
@@ -1135,16 +975,13 @@ mark {
 
 .form-group input,
 .form-group textarea {
-    /* --- LIQUID GLASS UPGRADE: Formulari de vidre --- */
-    background: rgba(249, 250, 251, 0.7); /* --gray-50 amb transparència */
+    background: rgba(249, 250, 251, 0.7);
     border: 1px solid rgba(0, 0, 0, 0.05);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.04);
-    /* --- --- */
-    
     width: 100%;
-    padding: 14px 18px; /* Més espai intern */
+    padding: 14px 18px;
     border-radius: var(--border-radius);
     font-size: 1rem;
     transition: var(--transition);
@@ -1156,14 +993,13 @@ mark {
     border-color: var(--primary-color);
     outline: none;
     background: var(--text-light);
-    /* Anell de focus */
     box-shadow: 0 0 0 3px rgba(226, 0, 26, 0.1);
 }
 
 /* Footer */
 .footer {
     background: var(--background-dark);
-    color: var(--gray-300); /* Més clar que --text-light pur */
+    color: var(--gray-300);
     padding: 60px 0 20px;
 }
 
@@ -1214,7 +1050,7 @@ mark {
 }
 
 .footer-bottom {
-    border-top: 1px solid var(--gray-700); /* Més visible que rgba */
+    border-top: 1px solid var(--gray-700);
     padding-top: 2rem;
     text-align: center;
     color: var(--gray-400);
@@ -1231,7 +1067,7 @@ mark {
     color: var(--text-light);
     padding: 140px 0 80px;
     text-align: center;
-    margin-top: 80px; /* Compensa la navbar fixa */
+    margin-top: 0;
 }
 
 .page-hero h1 {
@@ -1262,6 +1098,7 @@ mark {
     gap: 1rem;
     margin-bottom: 3rem;
     flex-wrap: wrap;
+    font-family: 'Inter Tight', sans-serif;
 }
 
 .filter-btn {
@@ -1290,7 +1127,6 @@ mark {
 }
 
 .news-card-full, .event-card-full {
-    /* --- LIQUID GLASS UPGRADE (Aplicat també a les targetes de pàgina completa) --- */
     background: rgba(255, 255, 255, 0.6);
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
@@ -1298,14 +1134,10 @@ mark {
     box-shadow: var(--glass-shadow);
     position: relative;
     overflow: hidden;
-    /* --- --- */
-    
     border-radius: var(--border-radius);
     transition: var(--transition);
 }
 
-/* --- LIQUID GLASS UPGRADE: Efecte Aurora (caldria afegir la classe .event-card-full::before, .news-card-full::before al selector d'aurora de dalt) --- */
-/* Per simplicitat, ho afegim aquí */
 .news-card-full::before,
 .event-card-full::before {
     content: '';
@@ -1329,9 +1161,8 @@ mark {
 .news-content-full,
 .event-content-full {
     position: relative;
-    z-index: 1; /* El contingut per sobre de l'aurora */
+    z-index: 1;
 }
-/* --- --- */
 
 .news-image-full, .event-image-full {
     height: 250px;
@@ -1390,7 +1221,7 @@ mark {
     display: inline-block;
     padding: 10px 15px;
     background: var(--background-light);
-    border-radius: 8px; /* Una mica més suau */
+    border-radius: 8px;
     text-decoration: none;
     color: var(--text-dark);
     transition: var(--transition);
@@ -1471,13 +1302,11 @@ mark {
 
 .countdown-item {
     text-align: center;
-    /* --- LIQUID GLASS UPGRADE --- */
     background: rgba(255, 255, 255, 0.6);
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
     border: var(--glass-border-light);
     box-shadow: var(--glass-shadow);
-    /* --- --- */
     padding: 1rem;
     border-radius: var(--border-radius);
     min-width: 80px;
@@ -1497,7 +1326,7 @@ mark {
 }
 
 .event-visual {
-    height: 450px; /* Una mica més alt */
+    height: 450px;
     background: var(--gray-200);
     border-radius: var(--border-radius);
 }
@@ -1547,134 +1376,9 @@ mark {
     opacity: 1;
 }
 
-/* --- UPGRADE: Animacions de Hover més subtils --- */
-.hover-underline::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 2px;
-    bottom: -4px; /* Una mica més a prop */
-    left: 0;
-    background: var(--primary-color);
-    transition: var(--transition);
-}
-
-.hover-underline:hover::after {
-    width: 60%; /* Un subratllat parcial és elegant */
-}
-
-.hover-lift:hover {
-    transform: translateY(-6px); /* Més subtil */
-    box-shadow: var(--shadow-lg);
-}
-
-.hover-scale:hover {
-    transform: scale(1.03); /* Més subtil */
-}
-
-.hover-rotate:hover {
-    transform: rotate(1deg); /* Més subtil */
-}
-
-.hover-glow:hover {
-    box-shadow: 0 0 25px rgba(226, 0, 26, 0.2);
-}
-
-.hover-pulse {
-    position: relative;
-    overflow: hidden;
-}
-
-.hover-pulse:hover::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    animation: pulse 0.8s 1;
-}
-@keyframes pulse {
-    0% { left: -100%; }
-    100% { left: 100%; }
-}
-
-.text-shimmer {
-    background: linear-gradient(90deg, var(--primary-color), var(--accent-color), var(--primary-color));
-    background-size: 200% 100%;
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: shimmer 4s infinite linear;
-}
-
-@keyframes shimmer {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
-}
-
-.highlight {
-    color: var(--accent-color);
-}
-
-/* Scroll Animations */
-.scroll-animate {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.scroll-animate.animate {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Email Ticker Styles */
-#emails {
-    position: relative;
-    height: 1.5em;
-    overflow: hidden;
-    margin-top: 5px;
-    width: 280px;
-}
-
-#emails strong {
-    display: block;
-    margin-bottom: 10px;
-}
-
-#emails p {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    margin: 0;
-    opacity: 0;
-    transform: translateY(-100%);
-    transition: transform 0.7s ease-in-out, opacity 0.7s ease-in-out;
-}
-
-#emails p.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-#emails p.amagat {
-    opacity: 0;
-    transform: translateY(100%);
-}
-
-/* Responsive Design */
-@media (max-width: 1200px) {
-    .nav-container {
-        padding: 0 30px; /* Un poco menos de padding en pantallas más pequeñas */
-    }
-    
-    .nav-menu {
-        gap: 2.5rem; /* Reducir espacio entre enlaces */
-    }
-}
+/* ============================================ */
+/* RESPONSIVE DESIGN CORREGIT */
+/* ============================================ */
 
 @media (max-width: 1024px) {
     .hero-title {
@@ -1698,58 +1402,59 @@ mark {
     }
     
     .nav-menu {
-        gap: 2rem; /* Menos espacio en tablets */
+        gap: 2rem;
     }
 }
 
 @media (max-width: 768px) {
-    .nav-container {
-        padding: 0 20px; /* Menos padding en móvil */
+    /* NAVBAR MÒBIL */
+    .navbar {
+        height: 60px;
+        padding: 0 20px;
+        top: 10px;
+        width: 95%;
     }
-    
-    /* Mobile Menu Styles */
+
+    .nav-container {
+        position: relative;
+    }
+
     .nav-menu {
         display: none;
         position: absolute;
         top: 100%;
         left: 0;
         right: 0;
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: var(--glass-blur);
-        -webkit-backdrop-filter: var(--glass-blur);
-        border-top: var(--glass-border-light);
-        box-shadow: var(--glass-shadow);
-        flex-direction: column;
+        background: rgba(40, 40, 40, 0.95);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-radius: 20px;
         padding: 1rem 0;
-        text-align: center;
-        z-index: 1000;
-        margin: 0; /* Reset margin en móvil */
-        gap: 0; /* Reset gap en móvil */
+        margin-top: 10px;
+        flex-direction: column;
+        gap: 0;
+        box-shadow: var(--glass-shadow);
     }
-    
+
     .nav-menu.active {
         display: flex;
     }
-    
-    .nav-menu .nav-link {
-        padding: 1rem 2rem;
-        border-bottom: 1px solid var(--border-color);
+
+    .nav-link {
+        padding: 12px 20px;
         display: block;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
-    
-    .nav-menu .nav-link:last-child {
+
+    .nav-link:last-child {
         border-bottom: none;
     }
-    
+
     .nav-toggle {
         display: flex;
     }
-    
-    .nav-actions {
-        display: none;
-    }
-    
-    /* Hamburger animation */
+
+    /* Animació hamburguesa */
     .nav-toggle.active span:nth-child(1) {
         transform: rotate(-45deg) translate(-5px, 6px);
     }
@@ -1761,25 +1466,27 @@ mark {
     .nav-toggle.active span:nth-child(3) {
         transform: rotate(45deg) translate(-5px, -6px);
     }
-    
-    .nav-logo .logo-link {
-        gap: 8px;
+
+    .nav-actions {
+        gap: 10px;
     }
-    
+
+    #search-input {
+        width: 120px;
+        font-size: 0.75rem;
+    }
+
+    #search-input:focus {
+        width: 150px;
+    }
+
     .logo-image {
-        height: 40px; /* Smaller on mobile */
+        height: 20px;
     }
-    
-    .logo-text {
-        font-size: 0.9rem;
-    }
-    
-    .logo-highlight {
-        font-size: 1rem;
-    }
-    
+
+    /* LAYOUT GENERAL */
     .hero {
-        height: 90vh; /* Una mica menys de 100 per mostrar que hi ha scroll */
+        height: 90vh;
         min-height: 500px;
     }
     
@@ -1790,7 +1497,7 @@ mark {
     }
     
     .stats-grid {
-        grid-template-columns: 1fr 1fr; /* 2 columnes en tauleta */
+        grid-template-columns: 1fr 1fr;
     }
     
     .events-grid,
@@ -1837,8 +1544,8 @@ mark {
     }
 
     .contact-grid {
-        /* Invertir l'ordre en mòbil perquè el formulari quedi a sota */
         grid-template-areas: "info" "form";
+        grid-template-columns: 1fr;
     }
     .contact-info { grid-area: info; }
     .contact-form { grid-area: form; }
@@ -1846,10 +1553,33 @@ mark {
 
 @media (max-width: 480px) {
     body {
-        /* Millora la llegibilitat en pantalles petites */
         line-height: 1.7;
     }
 
+    /* NAVBAR MÒBIL PETIT */
+    .navbar {
+        padding: 0 15px;
+        height: 55px;
+    }
+
+    #search-input {
+        width: 100px;
+    }
+
+    #search-input:focus {
+        width: 130px;
+    }
+
+    .nav-donate {
+        padding: 2px 15px 2px 15px;
+        font-size: 0.75rem;
+    }
+
+    .logo-image {
+        height: 18px;
+    }
+
+    /* LAYOUT GENERAL */
     .hero-title {
         font-size: 2.2rem;
     }
@@ -1858,7 +1588,7 @@ mark {
     }
     
     .stats-grid {
-        grid-template-columns: 1fr; /* 1 columna en mòbil */
+        grid-template-columns: 1fr;
     }
     
     .section-header h2 {
@@ -1887,26 +1617,6 @@ mark {
     
     .countdown-number {
         font-size: 1.5rem;
-    }
-    
-    .nav-container {
-        padding: 0 15px; /* Mínimo padding en móviles pequeños */
-    }
-    
-    .nav-logo .logo-link {
-        gap: 6px;
-    }
-    
-    .logo-image {
-        height: 35px; /* Even smaller on very small screens */
-    }
-    
-    .logo-text {
-        font-size: 0.8rem;
-    }
-    
-    .logo-highlight {
-        font-size: 0.9rem;
     }
 }
 
